@@ -6,6 +6,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import AboutUs from "./components/AboutUs";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/projects/:id" element={<ProjectDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </Router>
   );
