@@ -8,9 +8,8 @@ const Sidebar = () => {
           <a href="/" className="text-lg font-semibold">Dashboard</a>
         </li>
         <li className="mb-4">
-          <a href="/projects" className="text-lg font-semibold">Projects</a>
+          <a href="/tasks" className="text-lg font-semibold">Tasks</a>
         </li>
-        {/* Add more links as needed */}
       </ul>
     </aside>
   );
