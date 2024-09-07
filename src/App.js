@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import AboutUs from "./components/AboutUs";
+import ContactPage from "./components/ContactUs";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactPage/>} />
       </Routes>
     </Router>
   );
