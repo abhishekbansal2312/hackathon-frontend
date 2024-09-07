@@ -7,12 +7,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     
     try {
+      setLoading(true);
+      //https://hackathon-backend-l1id.onrender.com/auth/login
       const response = await fetch("https://hackathon-backend-l1id.onrender.com/auth/login", {
         method: "POST",
         headers: {
@@ -25,6 +28,7 @@ const Login = () => {
       if (!response.ok) {
         // Extract the error message from the response
         const errorData = await response.text(); // or response.json() if your server returns JSON errors
+        setLoading(false);
         throw new Error(`Login failed: ${errorData}`);
       }
   
@@ -33,9 +37,11 @@ const Login = () => {
       // Check if the response contains the expected success message
       if (data.message === "Login successful") {
         localStorage.setItem("userInfo", JSON.stringify(data));
+        setLoading(false);
         navigate("/"); // Redirect to dashboard or any protected route
       } else {
         throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
+        setLoading(false);
       }
     } catch (error) {
       // Set a more detailed error message
@@ -78,12 +84,14 @@ const Login = () => {
                 placeholder="Enter your password"
               />
             </div>
-            <button
+            {!loading && <button
               type="submit"
-              className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out"
-            >
+              className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
               Login
-            </button>
+            </button>}
+            {loading && <button className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
+              Loading.....
+            </button>}
           </form>
         </div>
       </div>
