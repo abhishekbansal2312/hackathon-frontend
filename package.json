@@ -18,11 +18,11 @@
     "framer-motion": "^11.5.4",
     "js-cookie": "^3.0.5",
     "react": "^18.3.1",
-<<<<<<< HEAD
+
     "react-cookie": "^7.2.0",
-=======
+
     "react-chartjs-2": "^5.2.0",
->>>>>>> 7a5c2ce37e15ecb6cb8e7200471643cc6c478de8
+
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-redux": "^9.1.2",
