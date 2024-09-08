@@ -6,19 +6,35 @@ import TaskCard from "../components/TaskCard";
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
 
-  // Fetch tasks from API
+  // Fetch tasks from API with credentials
   const fetchTasks = async () => {
     try {
-      const response = await fetch("http://localhost:3006/task/tasks");
-      const data = await response.json();
-      setTasks(data);
+      const response = await fetch("http://localhost:3006/task/tasks", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      // Check if the response is JSON
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        setTasks(data);
+      } else {
+        const text = await response.text();
+        console.error("Response is not JSON:", text);
+      }
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
   };
+  ;
 
   useEffect(() => {
-    fetchTasks();
+    fetchTasks(); // Fetch tasks when the component mounts
   }, []);
 
   // Handle delete task
@@ -28,6 +44,11 @@ const Tasks = () => {
         `http://localhost:3006/task/delete/${taskId}`,
         {
           method: "DELETE",
+          credentials: "include", // Include credentials like cookies
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Send token in Authorization header
+          },
         }
       );
 

@@ -12,28 +12,28 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       setLoading(true);
       //https://hackathon-backend-l1id.onrender.com/auth/login
-      const response = await fetch("https://hackathon-backend-l1id.onrender.com/auth/login", {
+      const response = await fetch("http://localhost:3006/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include'
+        credentials: "include",
       });
-  
+
       if (!response.ok) {
         // Extract the error message from the response
         const errorData = await response.text(); // or response.json() if your server returns JSON errors
         setLoading(false);
         throw new Error(`Login failed: ${errorData}`);
       }
-  
+
       const data = await response.json();
-      
+
       // Check if the response contains the expected success message
       if (data.message === "Login successful") {
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -42,14 +42,12 @@ const Login = () => {
       } else {
         setLoading(false);
         throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
-        
       }
     } catch (error) {
       // Set a more detailed error message
-      setError(error.message || 'An unexpected error occurred');
+      setError(error.message || "An unexpected error occurred");
     }
   };
-  
 
   return (
     <div className="flex h-screen">
@@ -85,14 +83,18 @@ const Login = () => {
                 placeholder="Enter your password"
               />
             </div>
-            {!loading && <button
-              type="submit"
-              className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
-              Login
-            </button>}
-            {loading && <button className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
-              Loading.....
-            </button>}
+            {!loading && (
+              <button
+                type="submit"
+                className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
+                Login
+              </button>
+            )}
+            {loading && (
+              <button className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
+                Loading.....
+              </button>
+            )}
           </form>
         </div>
       </div>
