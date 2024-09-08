@@ -4,40 +4,41 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 bg-gray-800 text-white h-screen p-6 flex flex-col justify-between shadow-md">
+    <aside className="w-64 pt-20 bg-gray-800 text-white h-auto p-6 flex flex-col justify-between shadow-md">
       {/* Sidebar Menu */}
       <ul className="space-y-3">
-        {" "}
         {/* Adjusted gap between items */}
         <li>
           <Link
             to="/dashboard"
-            className="flex items-center mt-14 p-3 rounded-md hover:bg-gray-700 transition duration-200">
+            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2">
             <FaTachometerAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Dashboard</span>
           </Link>
         </li>
-        
+
         <li>
           <Link
             to="/tasks"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
+            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2">
             <FaTasks className="mr-3 text-xl" />
             <span className="text-lg font-medium">Tasks</span>
           </Link>
         </li>
+
         <li>
           <Link
             to="/calendar"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
+            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2">
             <FaCalendarAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Calendar</span>
           </Link>
         </li>
+
         <li>
           <Link
             to="/settings"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
+            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2">
             <FaCog className="mr-3 text-xl" />
             <span className="text-lg font-medium">Settings</span>
           </Link>
