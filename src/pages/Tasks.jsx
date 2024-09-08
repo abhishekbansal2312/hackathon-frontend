@@ -30,15 +30,19 @@ const Tasks = () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          // Authorization: `Bearer ${localStorage.getItem("token")}`
         },
       });
 
       const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
+
+      
         const data = await response.json();
-        setTasks(data);
-      } else {
+        console.log("data is", data);
+        if(data){
+          setTasks(data);
+        }
+       else {
         const text = await response.text();
         console.error("Response is not JSON:", text);
         setError("Failed to fetch tasks.");

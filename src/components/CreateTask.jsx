@@ -39,6 +39,7 @@ const CreateTask = ({ onClose }) => {
         const result = await response.json();
         console.log("Task created:", result);
         onClose(); // Close the modal after successful task creation
+        window.location.reload(); 
       } else {
         const errorData = await response.json();
         console.error("Failed to create task:", errorData.error);

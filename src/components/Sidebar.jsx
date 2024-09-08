@@ -10,9 +10,9 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 pt-20 min-h-screen bg-gray-800 text-white h-auto p-6 flex flex-col justify-between shadow-md">
+    <aside className="w-64 pt-20  min-h-screen bg-gray-800 text-white h-auto p-6 flex flex-col justify-between shadow-md">
       {/* Sidebar Menu */}
-      <ul className="space-y-3">
+      <ul className="space-y-3 fixed">
         {/* Dashboard Link */}
         <li>
           <Link
@@ -65,7 +65,7 @@ const Sidebar = () => {
       </ul>
 
       {/* Bottom Section */}
-      <div className="mt-auto">
+      <div className="mt-auto fixed bottom-3">
         <p className="text-sm text-gray-500">© 2024 Your Company</p>
       </div>
     </aside>

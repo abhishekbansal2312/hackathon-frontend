@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaCalendarAlt,
   FaFlag,
@@ -7,7 +8,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-const TaskCard = ({ task, onDelete }) => {
+const TaskCard = ({task, onDelete }) => {
   const {
     _id,
     title,
@@ -19,11 +20,14 @@ const TaskCard = ({ task, onDelete }) => {
     team,
   } = task;
 
+  const url1 = `/tasks/${_id}`;
+  // console.log(url1);
+
   return (
     <div className="bg-white p-6 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
       {/* Task Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+        <h2 className="text-xl font-bold text-gray-900"><Link to={url1}>{title}</Link></h2>
         <span
           className={`px-3 py-1 rounded-full text-xs font-semibold ${
             priority === "high"
