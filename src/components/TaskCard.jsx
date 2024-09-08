@@ -1,44 +1,93 @@
-// TaskCard.js
-import React from 'react';
+import React from "react";
+import {
+  FaCalendarAlt,
+  FaFlag,
+  FaUser,
+  FaTrash,
+  FaClock,
+} from "react-icons/fa";
 
-const TaskCard = ({ task, onDelete, onEdit }) => {
+const TaskCard = ({ task, onDelete }) => {
+  const {
+    _id,
+    title,
+    date,
+    priority,
+    status,
+    assignedDate,
+    deadlineDate,
+    team,
+  } = task;
+
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6 mb-6 hover:shadow-xl transition-shadow duration-300 ease-in-out">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">{task.title}</h2>
-        {/* Status Badge */}
+    <div className="bg-white p-6 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
+      {/* Task Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
         <span
-          className={`px-3 py-1 text-sm font-semibold rounded-full ${
-            task.status === 'Completed'
-              ? 'bg-green-100 text-green-800'
-              : 'bg-yellow-100 text-yellow-800'
-          }`}
-        >
-          {task.status}
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            priority === "high"
+              ? "bg-red-100 text-red-700"
+              : priority === "normal"
+              ? "bg-yellow-100 text-yellow-700"
+              : "bg-green-100 text-green-700"
+          }`}>
+          {priority}
         </span>
       </div>
-      <p className="text-gray-700 mt-2">{task.description}</p>
 
-      {/* Task Details (optional) */}
-      {task.deadlineDate && (
-        <p className="text-sm text-gray-500 mt-2">
-          Deadline: {new Date(task.deadlineDate).toLocaleDateString()}
-        </p>
-      )}
+      {/* Task Details Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+        {/* Date Created */}
+        <div className="flex items-center space-x-2">
+          <FaCalendarAlt className="text-blue-500" />
+          <span>
+            <strong>Date Created:</strong> {new Date(date).toLocaleDateString()}
+          </span>
+        </div>
 
-      {/* Actions */}
-      <div className="mt-4 flex space-x-4">
+        {/* Status */}
+        <div className="flex items-center space-x-2">
+          <FaFlag className="text-yellow-500" />
+          <span>
+            <strong>Status:</strong> {status}
+          </span>
+        </div>
+
+        {/* Assigned Date */}
+        <div className="flex items-center space-x-2">
+          <FaClock className="text-purple-500" />
+          <span>
+            <strong>Assigned Date:</strong>{" "}
+            {new Date(assignedDate).toLocaleDateString()}
+          </span>
+        </div>
+
+        {/* Deadline Date */}
+        <div className="flex items-center space-x-2">
+          <FaClock className="text-red-500" />
+          <span>
+            <strong>Deadline Date:</strong>{" "}
+            {new Date(deadlineDate).toLocaleDateString()}
+          </span>
+        </div>
+
+        {/* Team */}
+        <div className="flex items-center space-x-2 col-span-2">
+          <FaUser className="text-green-500" />
+          <span>
+            <strong>Team:</strong> {team.length > 0 ? team.join(", ") : "N/A"}
+          </span>
+        </div>
+      </div>
+
+      {/* Delete Button */}
+      <div className="flex justify-end mt-6">
         <button
-          onClick={() => onEdit(task)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => onDelete(task._id)}
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300"
-        >
-          Delete
+          onClick={() => onDelete(_id)}
+          className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200">
+          <FaTrash />
+          <span>Delete</span>
         </button>
       </div>
     </div>

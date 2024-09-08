@@ -40,8 +40,9 @@ const Login = () => {
         setLoading(false);
         navigate("/"); // Redirect to dashboard or any protected route
       } else {
-        throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
         setLoading(false);
+        throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
+        
       }
     } catch (error) {
       // Set a more detailed error message
