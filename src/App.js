@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import AboutUs from "./components/AboutUs";
 import ContactPage from "./components/ContactUs";
+import Users from "./pages/Users";
 
 const App = () => {
   return (
@@ -20,7 +21,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<ContactPage/>} />
+        <Route path="/contact" element={<ContactPage />} />\
+        <Route path="/users" element={<Users />} />
       </Routes>
     </Router>
   );
