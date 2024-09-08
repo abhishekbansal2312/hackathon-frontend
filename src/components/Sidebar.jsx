@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTachometerAlt, FaTasks, FaCalendarAlt, FaCog } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -9,36 +10,37 @@ const Sidebar = () => {
         {" "}
         {/* Adjusted gap between items */}
         <li>
-          <a
-            href="/"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
+          <Link
+            to="/dashboard"
+            className="flex items-center mt-14 p-3 rounded-md hover:bg-gray-700 transition duration-200">
             <FaTachometerAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Dashboard</span>
-          </a>
+          </Link>
         </li>
+        
         <li>
-          <a
-            href="/tasks"
+          <Link
+            to="/tasks"
             className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
             <FaTasks className="mr-3 text-xl" />
             <span className="text-lg font-medium">Tasks</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/calendar"
+          <Link
+            to="/calendar"
             className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
             <FaCalendarAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Calendar</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="/settings"
+          <Link
+            to="/settings"
             className="flex items-center p-3 rounded-md hover:bg-gray-700 transition duration-200">
             <FaCog className="mr-3 text-xl" />
             <span className="text-lg font-medium">Settings</span>
-          </a>
+          </Link>
         </li>
       </ul>
 

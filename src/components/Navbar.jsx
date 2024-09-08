@@ -1,7 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  // Logout function
+  const navigate = useNavigate();
+  function handleLogout() {
+    const url = "http://localhost:3006/auth/logout";
+    fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Logout successful");
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  }
   return (
     <nav className="bg-gray-900 text-white py-4 shadow-md w-full fixed top-0 left-0 z-50">
       <div className="flex justify-between items-center px-8">
@@ -28,12 +47,12 @@ const Navbar = () => {
             Dashboard
           </Link> */}
 
-          {/* Login Button */}
-          <Link to="/login">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
-              Login
-            </button>
-          </Link>
+          {/* logout Button */}
+          
+          <button onClick={handleLogout}  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
+            Logout
+          </button>
+          
         </div>
       </div>
     </nav>

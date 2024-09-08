@@ -38,7 +38,7 @@ const Login = () => {
       if (data.message === "Login successful") {
         localStorage.setItem("userInfo", JSON.stringify(data));
         setLoading(false);
-        navigate("/"); // Redirect to dashboard or any protected route
+        navigate("/dashboard"); // Redirect to dashboard or any protected route
       } else {
         setLoading(false);
         throw new Error(`Unexpected response: ${JSON.stringify(data)}`);
