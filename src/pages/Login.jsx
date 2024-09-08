@@ -45,6 +45,7 @@ const Login = () => {
       }
     } catch (error) {
       // Set a more detailed error message
+      setLoading(false);
       setError(error.message || "An unexpected error occurred");
     }
   };

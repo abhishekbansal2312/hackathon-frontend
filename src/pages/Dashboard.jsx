@@ -3,6 +3,7 @@ import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import Cookies from 'js-cookie';
 
 const Dashboard = () => {
   const [taskData, setTaskData] = useState({
@@ -19,7 +20,7 @@ const Dashboard = () => {
 
   const fetchTasks = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get("token");
       if (!token) {
         console.error('No token found. Redirecting to login page...');
         // window.location.href = '/login';
@@ -31,16 +32,14 @@ const Dashboard = () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
         },
       });
 
       // Check if the response is JSON
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-
+        console.log("data is", data);
         // Update state with fetched data
+        if(data){
         const totalTasks = data.length;
         const computedTasks = data.filter(task => task.status === 'completed').length;
         const tasksInProgress = data.filter(task => task.status === 'in-progress').length;
