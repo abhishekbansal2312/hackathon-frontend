@@ -185,16 +185,16 @@ const TaskDetails = () => {
           </div>
 
           {showPopup && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
               <motion.div
                 initial={{ opacity: 0, y: -100 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl">
+                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl text-black">
                 <h2 className="text-2xl font-semibold mb-4">
                   Add New Activity
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 ">
                   <div className="flex flex-col">
                     <label htmlFor="type" className="mb-1 font-medium">
                       Type
@@ -260,7 +260,7 @@ const TaskDetails = () => {
           )}
 
           {showTimelinePopup && task && (
-            <div className="my-6">
+            <div className="my-6 text-black">
               <VerticalTimeline>
                 {task.activities.map((activity) => (
                   <VerticalTimelineElement
