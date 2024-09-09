@@ -244,3 +244,8 @@ body.dark {
   background-color: black !important; /* Change header background to black */
   color: white !important;            /* Change header text to white */
 }
+/* Ensure this CSS is added to the file that is imported in your component */
+.small-icon .vertical-timeline-element-icon {
+  font-size: 24px; /* Adjust the size as needed */
+}
+

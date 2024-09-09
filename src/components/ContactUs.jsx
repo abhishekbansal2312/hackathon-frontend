@@ -1,15 +1,45 @@
 import React from "react";
+import { Canvas } from "@react-three/fiber";
+import { Stars } from "@react-three/drei";
+import { TorusKnot } from "@react-three/drei";
 
 const ContactPage = () => {
   return (
     <div
       style={{
+        position: "relative",
         minHeight: "100vh",
         background: "linear-gradient(to right, #2c3e50, #34495e)",
         color: "#ecf0f1",
         display: "flex",
         flexDirection: "column",
       }}>
+      {/* 3D Background */}
+      <Canvas
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+        camera={{ position: [0, 0, 10], fov: 50 }}>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        <Stars
+          radius={100}
+          depth={50}
+          count={5000}
+          factor={4}
+          saturation={0}
+          fade
+        />
+        <TorusKnot args={[1, 0.4, 100, 16]} rotation={[0, 0, Math.PI / 4]}>
+          <meshStandardMaterial color="#1abc9c" />
+        </TorusKnot>
+      </Canvas>
+
       {/* Header */}
       <header
         style={{
@@ -17,6 +47,9 @@ const ContactPage = () => {
           color: "#ecf0f1",
           padding: "20px",
           textAlign: "center",
+          zIndex: 1,
+          fontSize:"30px",
+          fontWeight:"bold"
         }}>
         <h1>Contact Us</h1>
       </header>
@@ -25,9 +58,10 @@ const ContactPage = () => {
         style={{
           flex: 1,
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "column",
           alignItems: "center",
           padding: "20px",
+          zIndex: 1,
         }}>
         <div
           style={{
@@ -38,6 +72,7 @@ const ContactPage = () => {
             boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
             overflow: "hidden",
             backgroundColor: "#2c3e50",
+            marginBottom: "30px",
           }}>
           {/* Left Side Contact Info */}
           <div
@@ -177,17 +212,6 @@ const ContactPage = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer
-        style={{
-          backgroundColor: "#34495e",
-          color: "#ecf0f1",
-          padding: "10px",
-          textAlign: "center",
-        }}>
-        <p>&copy; 2024 Your Company</p>
-      </footer>
     </div>
   );
 };

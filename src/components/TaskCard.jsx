@@ -99,7 +99,7 @@ const TaskCard = ({ task, onDelete }) => {
       className={`relative pt-3 shadow-md rounded-lg border transition-shadow duration-200 ease-in-out ${
         theme === "dark"
           ? "bg-gray-700 border-gray-700 text-white hover:shadow-lg"
-          : "bg-white border-gray-200 text-gray-800 hover:shadow-lg"
+          : "bg-slate-100 border-gray-200 text-gray-800 hover:shadow-lg"
       }`}>
       {/* Priority Icon */}
       <div
