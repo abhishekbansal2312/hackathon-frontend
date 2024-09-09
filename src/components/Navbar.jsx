@@ -1,10 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
+import ThemeToggle from "./ThemeToggle";
+import "../App.css";
 
 const Navbar = () => {
-  // Logout function
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+
   function handleLogout() {
     const url = "http://localhost:3006/auth/logout";
     fetch(url, {
@@ -23,7 +26,12 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-gray-900 text-white py-4 shadow-md w-full fixed top-0 left-0 z-40">
+    <nav
+      className={`py-4 fixed top-0 left-0 w-full shadow-md ${
+        theme === "light"
+          ? "bg-white text-black z-50"
+          : "bg-gray-800 text-white z-50"
+      }`}>
       <div className="flex justify-between items-center px-8 max-w-screen-xl mx-auto">
         {/* Logo or Title */}
         <h1 className="text-2xl font-bold tracking-wide hover:text-blue-500 transition duration-200">
@@ -42,11 +50,9 @@ const Navbar = () => {
             className="hover:text-blue-500 transition duration-200">
             Contact
           </Link>
-          {/* <Link
-            to="/dashboard"
-            className="hover:text-blue-500 transition duration-200">
-            Dashboard
-          </Link> */}
+
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
 
           {/* Logout Button */}
           <button

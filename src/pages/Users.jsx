@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Table,
   Spin,
@@ -10,10 +10,10 @@ import {
   Select,
   Popconfirm,
 } from "antd";
-import '../index.css';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { ThemeContext } from "../context/ThemeContext";
 
 const { Option } = Select;
 
@@ -25,6 +25,7 @@ const Users = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [form] = Form.useForm();
+  const { theme } = useContext(ThemeContext);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -40,9 +41,6 @@ const Users = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      const cookie = document.cookie;
-      console.log("cookie is",cookie);
-      console.log("data is",data);
       setUsers(data);
     } catch (error) {
       setError(error.message || "Error fetching users.");
@@ -177,11 +175,16 @@ const Users = () => {
   ];
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div
+      className={`flex min-h-screen ${
+        theme === "dark"
+          ? "bg-gray-800 text-white"
+          : "bg-gray-100 text-gray-800"
+      }`}>
       <Sidebar />
       <main className="flex-1 p-8 mt-20">
         <Navbar />
-        <div className="mb-4">
+        <div className="mb-4 flex justify-between items-center">
           <Button
             type="primary"
             className="add-user-button"
@@ -199,15 +202,30 @@ const Users = () => {
             columns={columns}
             rowKey="_id"
             pagination={false}
+            className={`border ${
+              theme === "dark"
+                ? "bg-gray-800 text-white border-gray-600 rounded-lg overflow-hidden" // Dark mode style with black background, white text, and border
+                : "bg-white text-gray-800 border-gray-300 rounded-lg overflow-hidden" // Light mode style with white background, gray text, and border
+            }`}
+            rowClassName={
+              (record, index) =>
+                theme === "dark"
+                  ? `bg-gray-800 text-white hover:text-black transition-all duration-200 hover:bg-gray-800` // Dark mode hover effect
+                  : `bg-white hover:bg-gray-50 hover:text-black transition-all duration-200` // Light mode hover effect
+            }
+            headerClassName={
+              theme === "dark"
+                ? "bg-black text-white"
+                : "bg-gray-100 text-gray-800"
+            }
           />
         )}
         <Modal
           title="Add User"
-          // visible={isAddModalVisible}
-          open={isAddModalVisible}  // Change visible to open
+          visible={isAddModalVisible}
           onOk={handleOkAdd}
           onCancel={handleCancelAdd}
-          className="add-user-modal"
+          className="user-modal"
           footer={[
             <Button
               key="cancel"
@@ -266,11 +284,10 @@ const Users = () => {
         </Modal>
         <Modal
           title="Edit User"
-          // visible={isEditModalVisible}
-          open={isEditModalVisible}  // Change visible to open
+          visible={isEditModalVisible}
           onOk={handleOkEdit}
           onCancel={handleCancelEdit}
-          className="add-user-modal"
+          className="user-modal"
           footer={[
             <Button
               key="cancel"
@@ -291,7 +308,7 @@ const Users = () => {
               name="username"
               label="Username"
               rules={[
-                { message: "Please input the username!" },
+                { required: true, message: "Please input the username!" },
               ]}>
               <Input />
             </Form.Item>
@@ -300,7 +317,7 @@ const Users = () => {
               label="Email"
               rules={[
                 {
-                  // required: true,
+                  required: true,
                   type: "email",
                   message: "Please input a valid email!",
                 },
@@ -308,17 +325,9 @@ const Users = () => {
               <Input />
             </Form.Item>
             <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                { message: "Please input the password!" },
-              ]}>
-              <Input.Password />
-            </Form.Item>
-            <Form.Item
               name="role"
               label="Role"
-              rules={[{  message: "Please select a role!" }]}>
+              rules={[{ required: true, message: "Please select a role!" }]}>
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
                 <Option value="manager">Manager</Option>

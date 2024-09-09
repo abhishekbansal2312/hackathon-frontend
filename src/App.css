@@ -183,3 +183,64 @@
   background-color: #40a9ff; /* Primary button hover color */
   border-color: #40a9ff; /* Primary button hover border color */
 }
+/* src/index.css or src/App.css */
+body {
+  @apply bg-white text-black;
+}
+
+body.dark {
+  @apply bg-black text-white;
+}
+
+/* App.css or a dedicated CSS file */
+
+.theme-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--toggle-background-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-button:hover {
+  background-color: var(--toggle-background-color-hover);
+}
+
+.theme-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.theme-icon.sun {
+  transform: rotate(0deg);
+}
+
+.theme-icon.moon {
+  transform: rotate(360deg);
+}
+
+.theme-icon.sun.animate {
+  transform: rotate(360deg);
+}
+
+.theme-icon.moon.animate {
+  transform: rotate(0deg);
+}
+
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+
+/* Users.css */
+.dark-table-header .ant-table-thead > tr > th {
+  background-color: black !important; /* Change header background to black */
+  color: white !important;            /* Change header text to white */
+}

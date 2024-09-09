@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FaTachometerAlt,
   FaTasks,
@@ -7,11 +7,13 @@ import {
   FaUsers,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import { ThemeContext } from "../context/ThemeContext"; // Adjust the path as needed
+import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
-
+// import ThemeToggle from "./ThemeToggle"; // Adjust the path as needed
+import "../App.css";
 const Sidebar = () => {
+  const { theme } = useContext(ThemeContext);
   const [role, setRole] = useState("");
 
   useEffect(() => {
@@ -23,15 +25,19 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <aside className="w-64 pt-20  min-h-screen bg-gray-800 text-white h-auto p-6 flex flex-col justify-between shadow-md">
+    <aside
+      className={`w-64 pt-20 min-h-screen h-auto p-6 flex flex-col justify-between shadow-md ${
+        theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+      }`}>
       {/* Sidebar Menu */}
       <ul className="space-y-3 fixed">
         {/* Dashboard Link */}
         <li>
           <Link
             to="/dashboard"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2"
-          >
+            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            }`}>
             <FaTachometerAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Dashboard</span>
           </Link>
@@ -41,8 +47,9 @@ const Sidebar = () => {
         <li>
           <Link
             to="/tasks"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-300 transform hover:translate-x-3 hover:scale-105"
-          >
+            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-3 hover:scale-105 ${
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            }`}>
             <FaTasks className="mr-3 text-xl" />
             <span className="text-lg font-medium">Tasks</span>
           </Link>
@@ -52,8 +59,9 @@ const Sidebar = () => {
         <li>
           <Link
             to="/calendar"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2"
-          >
+            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            }`}>
             <FaCalendarAlt className="mr-3 text-xl" />
             <span className="text-lg font-medium">Calendar</span>
           </Link>
@@ -63,8 +71,9 @@ const Sidebar = () => {
         <li>
           <Link
             to="/settings"
-            className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2"
-          >
+            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            }`}>
             <FaCog className="mr-3 text-xl" />
             <span className="text-lg font-medium">Settings</span>
           </Link>
@@ -75,7 +84,9 @@ const Sidebar = () => {
           <li>
             <Link
               to="/users"
-              className="flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2">
+              className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+                theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+              }`}>
               <FaUsers className="mr-3 text-xl" />
               <span className="text-lg font-medium">Users</span>
             </Link>
@@ -83,9 +94,10 @@ const Sidebar = () => {
         )}
       </ul>
 
+      {/* Bottom Section with Theme Toggle Button */}
       {/* Bottom Section */}
-      <div className="mt-auto fixed bottom-3">
-        <p className="text-sm text-gray-500">© 2024 Your Company</p>
+      <div className="mt-auto text-center text-sm">
+        <p>© 2024 Your Company</p>
       </div>
     </aside>
   );

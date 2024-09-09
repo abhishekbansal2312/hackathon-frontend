@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Pie, Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import Navbar from "../components/Navbar";
@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Cookies from "js-cookie";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Dashboard = () => {
   const [taskData, setTaskData] = useState({
@@ -15,6 +16,8 @@ const Dashboard = () => {
     todos: 0,
     priorityData: { high: 0, medium: 0, normal: 0, low: 0 },
   });
+
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchTasks();
@@ -77,7 +80,6 @@ const Dashboard = () => {
     datasets: [
       {
         data: Object.values(taskData.priorityData),
-
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
       },
     ],
@@ -109,7 +111,7 @@ const Dashboard = () => {
           font: {
             size: 14,
           },
-          color: "#E0E0E0", // Legend text color set to a softer white
+          color: theme === "dark" ? "#E0E0E0" : "#333", // Legend text color based on theme
         },
       },
       tooltip: {
@@ -120,11 +122,11 @@ const Dashboard = () => {
         },
         bodyFont: {
           size: 14,
-          color: "#E0E0E0", // Tooltip text color set to a softer white
+          color: theme === "dark" ? "#E0E0E0" : "#333", // Tooltip text color based on theme
         },
         titleFont: {
           size: 16,
-          color: "#E0E0E0", // Tooltip title color set to a softer white
+          color: theme === "dark" ? "#E0E0E0" : "#333", // Tooltip title color based on theme
         },
       },
     },
@@ -132,31 +134,42 @@ const Dashboard = () => {
     scales: {
       x: {
         ticks: {
-          color: "#E0E0E0", // X-axis labels color set to a softer white
+          color: theme === "dark" ? "#E0E0E0" : "#333", // X-axis labels color based on theme
           font: {
             size: 14,
           },
         },
         grid: {
-          color: "rgba(224, 224, 224, 0.2)", // X-axis grid lines color set to a softer white
+          color:
+            theme === "dark"
+              ? "rgba(224, 224, 224, 0.2)"
+              : "rgba(0, 0, 0, 0.1)", // X-axis grid lines color based on theme
         },
       },
       y: {
         ticks: {
-          color: "#E0E0E0", // Y-axis labels color set to a softer white
+          color: theme === "dark" ? "#E0E0E0" : "#333", // Y-axis labels color based on theme
           font: {
             size: 14,
           },
         },
         grid: {
-          color: "rgba(224, 224, 224, 0.2)", // Y-axis grid lines color set to a softer white
+          color:
+            theme === "dark"
+              ? "rgba(224, 224, 224, 0.2)"
+              : "rgba(0, 0, 0, 0.1)", // Y-axis grid lines color based on theme
         },
       },
     },
   };
 
   return (
-    <div className="flex bg-gray-900 text-gray-100">
+    <div
+      className={`flex ${
+        theme === "dark"
+          ? "bg-gray-900 text-gray-100"
+          : "bg-gray-100 text-gray-900"
+      } min-h-screen`}>
       {/* Sidebar */}
       <Sidebar />
 
@@ -166,65 +179,64 @@ const Dashboard = () => {
         <Navbar />
 
         {/* Content area */}
-        <main className="flex-1 p-6 bg-gray-800 text-gray-100">
+        <main
+          className={`flex-1 p-6 ${
+            theme === "dark" ? "bg-gray-800" : "bg-gray-100"
+          }`}>
           {/* Cards Section */}
-          <div className="flex gap-4 mb-6 mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-20">
             {[
-              "Total Tasks",
-              "Completed Tasks",
-              "Tasks In Progress",
-              "Todos",
-            ].map((label, index) => (
+              {
+                label: "Total Tasks",
+                value: taskData.totalTasks,
+                color: theme === "dark" ? "text-yellow-400" : "text-yellow-800",
+              },
+              {
+                label: "Completed Tasks",
+                value: taskData.computedTasks,
+                color: theme === "dark" ? "text-green-400" : "text-green-800",
+              },
+              {
+                label: "Tasks In Progress",
+                value: taskData.tasksInProgress,
+                color: theme === "dark" ? "text-blue-400" : "text-blue-800",
+              },
+              {
+                label: "Todos",
+                value: taskData.todos,
+                color: theme === "dark" ? "text-red-600" : "text-red-800",
+              },
+            ].map((item, index) => (
               <motion.div
                 key={index}
-                className="bg-gray-700 p-6 rounded-lg shadow-lg w-full md:w-1/2 lg:w-1/4"
+                className={`p-6 rounded-lg shadow-lg ${
+                  theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                } flex flex-col items-center`}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 + index * 0.2 }}
-              >
-                <h2
-                  className={`text-xl font-semibold ${
-                    index === 0
-                      ? "text-yellow-300" // Change heading color for "Total Tasks"
-                      : index === 1
-                      ? "text-green-400" // Change heading color for "Completed Tasks"
-                      : index === 2
-                      ? "text-blue-400" // Change heading color for "Tasks In Progress"
-                      : "text-red-400" // Change heading color for "Todos"
-                  }`}
-                >
-                  {label}
+                transition={{ duration: 0.5 + index * 0.2 }}>
+                <h2 className={`text-xl font-semibold ${item.color}`}>
+                  {item.label}
                 </h2>
-                <p
-                  className={`text-3xl font-bold ${
-                    index === 0
-                      ? "text-teal-300"
-                      : index === 1
-                      ? "text-teal-300"
-                      : index === 2
-                      ? "text-teal-300"
-                      : "text-teal-300"
-                  }`}
-                >
-                  <CountUp
-                    end={Object.values(taskData)[index]}
-                    duration={1.5}
-                  />
+                <p className="text-3xl font-bold text-black-700 mt-2">
+                  <CountUp end={item.value} duration={1.5} />
                 </p>
               </motion.div>
             ))}
           </div>
 
           {/* Charts Section */}
-          <div className="flex gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Task Priority Chart */}
             <motion.div
-              className="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2"
+              className={`p-4 rounded-lg shadow-lg ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+              }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
+              transition={{ duration: 1 }}>
+              <h2
+                className={`text-xl font-semibold theme === "dark" ? "text-black" : "text-white" mb-4 text-center`}>
                 Task Priority Chart
               </h2>
               <div className="w-full h-[350px]">
@@ -234,12 +246,14 @@ const Dashboard = () => {
 
             {/* Task Status Chart */}
             <motion.div
-              className="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2"
+              className={`p-4 rounded-lg shadow-lg ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+              }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-            >
-              <h2 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
+              transition={{ duration: 0.7 }}>
+              <h2
+                className={`text-xl font-semibold theme === "dark" ? "text-black" : "text-white" mb-4 text-center`}>
                 Task Status Chart
               </h2>
               <div className="w-full h-[350px]">
