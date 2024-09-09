@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
@@ -9,12 +9,21 @@ import {
   AiOutlineFlag,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
+<<<<<<< HEAD
+import { ThemeContext } from "../context/ThemeContext";
+=======
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
 import Cookies from "js-cookie";
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+<<<<<<< HEAD
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { theme } = useContext(ThemeContext);
+=======
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [role, setRole] = useState("");
@@ -26,6 +35,7 @@ const Tasks = () => {
       setRole(decodedToken.role); // Set the role in the state
     }
   }, []);
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
   // Open add task modal
   const openAddTask = () => {
@@ -50,7 +60,6 @@ const Tasks = () => {
       });
 
       const data = await response.json();
-      console.log("data is", data);
       if (data) {
         setTasks(data);
       } else {
@@ -103,16 +112,20 @@ const Tasks = () => {
       switch (priority) {
         case "high":
           return (
+<<<<<<< HEAD
+            <AiOutlineExclamationCircle size={20} className="text-red-500" />
+=======
             <AiOutlineExclamationCircle size={24} className="text-red-500" />
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
           );
         case "medium":
-          return <AiOutlineInfoCircle size={24} className="text-yellow-500" />;
+          return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
         case "normal":
-          return <AiOutlineFlag size={24} className="text-blue-500" />;
+          return <AiOutlineFlag size={20} className="text-blue-500" />;
         case "low":
-          return <AiOutlineCheckCircle size={24} className="text-green-500" />;
+          return <AiOutlineCheckCircle size={20} className="text-green-500" />;
         default:
-          return <AiOutlineFlag size={24} className="text-gray-500" />;
+          return <AiOutlineFlag size={20} className="text-gray-500" />;
       }
     };
 
@@ -133,8 +146,7 @@ const Tasks = () => {
 
     return (
       <span
-        className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor()}`}
-      >
+        className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor()}`}>
         {getPriorityIcon()}
         <span>{priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
       </span>
@@ -142,10 +154,29 @@ const Tasks = () => {
   };
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div
+      className={`flex min-h-screen ${
+        theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+      }`}>
       <Sidebar />
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-6">
         <Navbar />
+<<<<<<< HEAD
+
+        {/* Priority Display */}
+        <div className="mb-8 flex space-x-4 mt-20 text-black">
+          <button
+            onClick={openAddTask}
+            className="bg-blue-400 hover:bg-blue-500 text-gray-200 font-semibold py-2 px-6 rounded-lg shadow-md focus:outline-none focus:ring focus:ring-blue-300">
+            Add New Task
+          </button>
+          <PriorityDisplay priority="high" />
+          <PriorityDisplay priority="medium" />
+          <PriorityDisplay priority="normal" />
+          <PriorityDisplay priority="low" />
+        </div>
+
+=======
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
           Task Dashboard
         </h2>
@@ -173,9 +204,10 @@ const Tasks = () => {
             <PriorityDisplay priority="low" />
           </div>
         )}
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
         {/* Show loading spinner if loading */}
         {loading ? (
-          <p className="text-gray-600 text-lg">Loading tasks...</p>
+          <p className="text-lg">Loading tasks...</p>
         ) : error ? (
           <p className="text-red-600 text-lg">{error}</p>
         ) : (
@@ -189,19 +221,19 @@ const Tasks = () => {
                 />
               ))
             ) : (
-              <p className="text-gray-600 text-lg">No tasks available.</p>
+              <p className="text-lg">No tasks available.</p>
             )}
           </div>
         )}
-        {/* CreateTask modal */}
+
+        {/* CreateTask Modal */}
         {isAddTaskOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
               <CreateTask onClose={closeAddTask} />
               <button
                 onClick={closeAddTask}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-              >
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
                 &times;
               </button>
             </div>

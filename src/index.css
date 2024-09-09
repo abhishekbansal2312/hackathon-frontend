@@ -8,4 +8,8 @@
   .add-user-modal .ant-modal-title {
     color: #000; /* Optional: Change the title color if needed */
   }
-  
+  /* Users.css */
+.dark-table-header .ant-table-thead > tr > th {
+  background-color: black !important; /* Change header background to black */
+  color: white !important;            /* Change header text to white */
+}
