@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 import "../App.css";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+
+  const [userName, setUserName] = useState("");
 
   function handleLogout() {
     const url = "http://localhost:3006/auth/logout";
@@ -24,6 +28,13 @@ const Navbar = () => {
         console.error("Logout failed:", error);
       });
   }
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserName(decodedToken.name);
+    }
+  }, []);
 
   return (
     <nav
@@ -31,7 +42,8 @@ const Navbar = () => {
         theme === "light"
           ? "bg-white text-black z-50"
           : "bg-gray-800 text-white z-50"
-      }`}>
+      }`}
+    >
       <div className="flex justify-between items-center px-8 max-w-screen-xl mx-auto">
         {/* Logo or Title */}
         <h1 className="text-2xl font-bold tracking-wide hover:text-blue-500 transition duration-200">
@@ -40,14 +52,20 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <div className="flex space-x-6 items-center">
+          <p className="text-lg font-semibold">
+  Welcome <span style={{ color: '#3498db' }}>{userName}</span>
+</p>
+
           <Link
             to="/about"
-            className="hover:text-blue-500 transition duration-200">
+            className="hover:text-blue-500 transition duration-200"
+          >
             About
           </Link>
           <Link
             to="/contact"
-            className="hover:text-blue-500 transition duration-200">
+            className="hover:text-blue-500 transition duration-200"
+          >
             Contact
           </Link>
 
@@ -57,7 +75,8 @@ const Navbar = () => {
           {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
+          >
             Logout
           </button>
         </div>
