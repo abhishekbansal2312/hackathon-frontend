@@ -9,8 +9,21 @@ import {
   AiOutlineDelete, // New icon for delete button
   AiOutlineCalendar, // New icon for calendar
 } from "react-icons/ai";
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 const TaskCard = ({ task, onDelete }) => {
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const token = Cookies.get("token"); // Retrieve the token from cookies
+    if (token) {
+      const decodedToken = jwtDecode(token); // Decode the token to get the role
+      setRole(decodedToken.role); // Set the role in the state
+    }
+  }, []);
+
   const { _id, title, priority, status, deadlineDate, team } = task;
 
   const url1 = `/tasks/${_id}`;
@@ -20,14 +33,14 @@ const TaskCard = ({ task, onDelete }) => {
     switch (priority) {
       case "high":
         return {
-          icon: <AiOutlineExclamationCircle size={24} className="text-red-500" />,
+          icon: (
+            <AiOutlineExclamationCircle size={24} className="text-red-500" />
+          ),
           color: "bg-red-100",
         };
       case "medium":
         return {
-          icon: (
-            <AiOutlineInfoCircle size={24} className="text-yellow-500" />
-          ),
+          icon: <AiOutlineInfoCircle size={24} className="text-yellow-500" />,
           color: "bg-yellow-100",
         };
       case "normal":
@@ -62,7 +75,8 @@ const TaskCard = ({ task, onDelete }) => {
     <div className="bg-white relative p-6 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
       {/* Priority Icon */}
       <div
-        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
+        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full flex items-center justify-center ${color}`}
+      >
         {icon}
       </div>
 
@@ -110,14 +124,16 @@ const TaskCard = ({ task, onDelete }) => {
       </div>
 
       {/* Delete Button */}
-      <div className="absolute bottom-4 right-4">
-        <button
-          onClick={() => onDelete(_id)}
-       className="text-red-500 hover:text-red-700 transition-colors duration-200"
-        >
-          <AiOutlineDelete size={20} />
-        </button>
-      </div>
+      {role === "admin" && (
+        <div className="absolute bottom-4 right-4">
+          <button
+            onClick={() => onDelete(_id)}
+            className="text-red-500 hover:text-red-700 transition-colors duration-200"
+          >
+            <AiOutlineDelete size={20} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

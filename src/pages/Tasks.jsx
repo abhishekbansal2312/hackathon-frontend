@@ -4,17 +4,28 @@ import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
 import CreateTask from "../components/CreateTask";
 import {
-  AiOutlineCheckCircle, 
-  AiOutlineExclamationCircle, 
-  AiOutlineFlag, 
-  AiOutlineInfoCircle, 
+  AiOutlineCheckCircle,
+  AiOutlineExclamationCircle,
+  AiOutlineFlag,
+  AiOutlineInfoCircle,
 } from "react-icons/ai";
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import Cookies from "js-cookie";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const token = Cookies.get("token"); // Retrieve the token from cookies
+    if (token) {
+      const decodedToken = jwtDecode(token); // Decode the token to get the role
+      setRole(decodedToken.role); // Set the role in the state
+    }
+  }, []);
 
   // Open add task modal
   const openAddTask = () => {
@@ -91,7 +102,9 @@ const Tasks = () => {
     const getPriorityIcon = () => {
       switch (priority) {
         case "high":
-          return <AiOutlineExclamationCircle size={24} className="text-red-500" />;
+          return (
+            <AiOutlineExclamationCircle size={24} className="text-red-500" />
+          );
         case "medium":
           return <AiOutlineInfoCircle size={24} className="text-yellow-500" />;
         case "normal":
@@ -136,19 +149,30 @@ const Tasks = () => {
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
           Task Dashboard
         </h2>
+        {/* priority */}
+        {role !== "admin" && (
+          <div className="flex items-center space-x-4 mb-8">
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="medium" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
         {/* Add a new task */}
-        <div className="flex items-center space-x-4 mb-8">
-          <button
-            onClick={openAddTask}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          >
-            Add Task
-          </button>
-          <PriorityDisplay priority="high" />
-          <PriorityDisplay priority="medium" />
-          <PriorityDisplay priority="normal" />
-          <PriorityDisplay priority="low" />
-        </div>
+        {role === "admin" && (
+          <div className="flex items-center space-x-4 mb-8">
+            <button
+              onClick={openAddTask}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+            >
+              Add Task
+            </button>
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="medium" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
         {/* Show loading spinner if loading */}
         {loading ? (
           <p className="text-gray-600 text-lg">Loading tasks...</p>

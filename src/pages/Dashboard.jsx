@@ -84,7 +84,7 @@ const Dashboard = () => {
   };
 
   const statusChartData = {
-    labels: ["Completed", "In Progress", "Todos"],
+    labels: ["Completed", "In Progress", "Pending"],
     datasets: [
       {
         label: "Number of Tasks",
