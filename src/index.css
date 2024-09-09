@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.add-user-modal .ant-modal-header {
+    background-color: transparent !important; /* Remove the blue background */
+  }
+  .add-user-modal .ant-modal-title {
+    color: #000; /* Optional: Change the title color if needed */
+  }
+  
