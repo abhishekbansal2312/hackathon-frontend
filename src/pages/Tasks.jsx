@@ -9,45 +9,36 @@ import {
   AiOutlineFlag,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
-<<<<<<< HEAD
 import { ThemeContext } from "../context/ThemeContext";
-=======
-import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { theme } = useContext(ThemeContext);
-=======
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
   const [role, setRole] = useState("");
 
+  // Use ThemeContext to get the theme
+  const { theme } = useContext(ThemeContext);
+
   useEffect(() => {
-    const token = Cookies.get("token"); // Retrieve the token from cookies
+    const token = Cookies.get("token");
     if (token) {
-      const decodedToken = jwtDecode(token); // Decode the token to get the role
-      setRole(decodedToken.role); // Set the role in the state
+      const decodedToken = jwtDecode(token);
+      setRole(decodedToken.role);
     }
   }, []);
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
-  // Open add task modal
   const openAddTask = () => {
     setIsAddTaskOpen(true);
   };
 
-  // Close add task modal
   const closeAddTask = () => {
     setIsAddTaskOpen(false);
   };
 
-  // Fetch tasks from API
   const fetchTasks = async () => {
     setLoading(true);
     try {
@@ -76,10 +67,9 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    fetchTasks(); // Fetch tasks when the component mounts
+    fetchTasks();
   }, []);
 
-  // Handle delete task
   const handleDeleteTask = async (taskId) => {
     try {
       const response = await fetch(
@@ -106,17 +96,12 @@ const Tasks = () => {
     }
   };
 
-  // Priority Icon and Label
   const PriorityDisplay = ({ priority }) => {
     const getPriorityIcon = () => {
       switch (priority) {
         case "high":
           return (
-<<<<<<< HEAD
             <AiOutlineExclamationCircle size={20} className="text-red-500" />
-=======
-            <AiOutlineExclamationCircle size={24} className="text-red-500" />
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
           );
         case "medium":
           return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
@@ -159,43 +144,24 @@ const Tasks = () => {
         theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
       }`}>
       <Sidebar />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 text-black">
         <Navbar />
-<<<<<<< HEAD
-
-        {/* Priority Display */}
-        <div className="mb-8 flex space-x-4 mt-20 text-black">
-          <button
-            onClick={openAddTask}
-            className="bg-blue-400 hover:bg-blue-500 text-gray-200 font-semibold py-2 px-6 rounded-lg shadow-md focus:outline-none focus:ring focus:ring-blue-300">
-            Add New Task
-          </button>
-          <PriorityDisplay priority="high" />
-          <PriorityDisplay priority="medium" />
-          <PriorityDisplay priority="normal" />
-          <PriorityDisplay priority="low" />
-        </div>
-
-=======
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
           Task Dashboard
         </h2>
-        {/* priority */}
         {role !== "admin" && (
-          <div className="flex items-center space-x-4 mb-8">
+          <div className="flex items-center space-x-4 mb-8 ">
             <PriorityDisplay priority="high" />
             <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>
         )}
-        {/* Add a new task */}
         {role === "admin" && (
           <div className="flex items-center space-x-4 mb-8">
             <button
               onClick={openAddTask}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-            >
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
               Add Task
             </button>
             <PriorityDisplay priority="high" />
@@ -204,8 +170,7 @@ const Tasks = () => {
             <PriorityDisplay priority="low" />
           </div>
         )}
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
-        {/* Show loading spinner if loading */}
+
         {loading ? (
           <p className="text-lg">Loading tasks...</p>
         ) : error ? (
@@ -226,7 +191,6 @@ const Tasks = () => {
           </div>
         )}
 
-        {/* CreateTask Modal */}
         {isAddTaskOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">

@@ -186,7 +186,6 @@ const Dashboard = () => {
           {/* Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-20">
             {[
-<<<<<<< HEAD
               {
                 label: "Total Tasks",
                 value: taskData.totalTasks,
@@ -203,18 +202,11 @@ const Dashboard = () => {
                 color: theme === "dark" ? "text-blue-400" : "text-blue-800",
               },
               {
-                label: "Todos",
-                value: taskData.todos,
+                label: "Pending",
+                value: taskData.pending,
                 color: theme === "dark" ? "text-red-600" : "text-red-800",
               },
             ].map((item, index) => (
-=======
-              "Total Tasks",
-              "Completed Tasks",
-              "Tasks In Progress",
-              "Pending",
-            ].map((label, index) => (
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
               <motion.div
                 key={index}
                 className={`p-6 rounded-lg shadow-lg ${
@@ -222,28 +214,11 @@ const Dashboard = () => {
                 } flex flex-col items-center`}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-<<<<<<< HEAD
                 transition={{ duration: 0.5 + index * 0.2 }}>
                 <h2 className={`text-xl font-semibold ${item.color}`}>
                   {item.label}
-=======
-                transition={{ duration: 0.5 + index * 0.2 }}
-              >
-                <h2
-                  className={`text-xl font-semibold ${
-                    index === 0
-                      ? "text-yellow-300" // Change heading color for "Total Tasks"
-                      : index === 1
-                      ? "text-green-400" // Change heading color for "Completed Tasks"
-                      : index === 2
-                      ? "text-blue-400" // Change heading color for "Tasks In Progress"
-                      : "text-red-400" // Change heading color for "pending"
-                  }`}
-                >
-                  {label}
->>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
                 </h2>
-                <p className="text-3xl font-bold text-black-700 mt-2">
+                <p className="text-3xl font-bold mt-2">
                   <CountUp end={item.value} duration={1.5} />
                 </p>
               </motion.div>
@@ -261,7 +236,9 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}>
               <h2
-                className={`text-xl font-semibold theme === "dark" ? "text-black" : "text-white" mb-4 text-center`}>
+                className={`text-xl font-semibold ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-800"
+                } mb-4 text-center`}>
                 Task Priority Chart
               </h2>
               <div className="w-full h-[350px]">
@@ -278,7 +255,9 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}>
               <h2
-                className={`text-xl font-semibold theme === "dark" ? "text-black" : "text-white" mb-4 text-center`}>
+                className={`text-xl font-semibold ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-800"
+                } mb-4 text-center`}>
                 Task Status Chart
               </h2>
               <div className="w-full h-[350px]">
