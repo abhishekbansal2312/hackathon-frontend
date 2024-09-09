@@ -19,6 +19,7 @@ const Pending = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(""); // Add state for user ID
 
   // Use ThemeContext to get the theme
   const { theme } = useContext(ThemeContext);
@@ -28,6 +29,7 @@ const Pending = () => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setRole(decodedToken.role);
+      setUserId(decodedToken._id); // Extract user ID
     }
   }, []);
 
@@ -52,7 +54,19 @@ const Pending = () => {
 
       const data = await response.json();
       if (data) {
-        setTasks(data);
+        let filteredTasks;
+
+        if (role === "admin") {
+          // Admins see all pending tasks
+          filteredTasks = data.filter(task => task.status === "pending");
+        } else {
+          // Regular users see only their pending tasks
+          filteredTasks = data
+            .filter(task => task.status === "pending")
+            .filter(task => task.team.some(member => member._id === userId));
+        }
+
+        setTasks(filteredTasks);
       } else {
         const text = await response.text();
         console.error("Response is not JSON:", text);
@@ -68,7 +82,7 @@ const Pending = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -177,16 +191,14 @@ const Pending = () => {
           <p className="text-red-600 text-lg">{error}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tasks.filter((task) => task.status === "pending").length > 0 ? (
-              tasks
-                .filter((task) => task.status === "pending") // Filter tasks by "pending" status
-                .map((task) => (
-                  <TaskCard
-                    key={task._id}
-                    task={task}
-                    onDelete={handleDeleteTask}
-                  />
-                ))
+            {tasks.length > 0 ? (
+              tasks.map((task) => (
+                <TaskCard
+                  key={task._id}
+                  task={task}
+                  onDelete={handleDeleteTask}
+                />
+              ))
             ) : (
               <p className="text-lg">No pending tasks available.</p>
             )}

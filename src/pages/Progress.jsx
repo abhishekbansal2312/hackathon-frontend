@@ -13,12 +13,13 @@ import { ThemeContext } from "../context/ThemeContext";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
-const Progress = () => {
+const Inprogress = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(""); // Add state for user ID
 
   // Use ThemeContext to get the theme
   const { theme } = useContext(ThemeContext);
@@ -28,6 +29,7 @@ const Progress = () => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setRole(decodedToken.role);
+      setUserId(decodedToken._id); // Extract user ID
     }
   }, []);
 
@@ -52,7 +54,19 @@ const Progress = () => {
 
       const data = await response.json();
       if (data) {
-        setTasks(data);
+        let filteredTasks;
+
+        if (role === "admin") {
+          // Admins see all in progress tasks
+          filteredTasks = data.filter(task => task.status === "in-progress");
+        } else {
+          // Regular users see only their n-progress tasks
+          filteredTasks = data
+            .filter(task => task.status === "in-progress")
+            .filter(task => task.team.some(member => member._id === userId));
+        }
+
+        setTasks(filteredTasks);
       } else {
         const text = await response.text();
         console.error("Response is not JSON:", text);
@@ -68,7 +82,7 @@ const Progress = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -147,7 +161,7 @@ const Progress = () => {
       <main className="flex-1 p-6 text-black">
         <Navbar />
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
-          In Progress Tasks
+          in-progress Tasks
         </h2>
         {role !== "admin" && (
           <div className="flex items-center space-x-4 mb-8 ">
@@ -178,15 +192,13 @@ const Progress = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tasks.length > 0 ? (
-              tasks
-                .filter((task) => task.status === "in-progress") // Filter tasks by "in progress" status
-                .map((task) => (
-                  <TaskCard
-                    key={task._id}
-                    task={task}
-                    onDelete={handleDeleteTask}
-                  />
-                ))
+              tasks.map((task) => (
+                <TaskCard
+                  key={task._id}
+                  task={task}
+                  onDelete={handleDeleteTask}
+                />
+              ))
             ) : (
               <p className="text-lg">No in-progress tasks available.</p>
             )}
@@ -210,4 +222,4 @@ const Progress = () => {
   );
 };
 
-export default Progress;
+export default Inprogress;
