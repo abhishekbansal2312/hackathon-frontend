@@ -77,6 +77,7 @@ const Dashboard = () => {
     datasets: [
       {
         data: Object.values(taskData.priorityData),
+
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
       },
     ],
@@ -107,8 +108,8 @@ const Dashboard = () => {
           padding: 20,
           font: {
             size: 14,
-            color: "#FFFFFF", // Set legend text color to white
           },
+          color: "#E0E0E0", // Legend text color set to a softer white
         },
       },
       tooltip: {
@@ -119,19 +120,43 @@ const Dashboard = () => {
         },
         bodyFont: {
           size: 14,
-          color: "#FFFFFF", // Set tooltip text color to white
+          color: "#E0E0E0", // Tooltip text color set to a softer white
         },
         titleFont: {
           size: 16,
-          color: "#FFFFFF", // Set tooltip title color to white
+          color: "#E0E0E0", // Tooltip title color set to a softer white
         },
       },
     },
     maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          color: "#E0E0E0", // X-axis labels color set to a softer white
+          font: {
+            size: 14,
+          },
+        },
+        grid: {
+          color: "rgba(224, 224, 224, 0.2)", // X-axis grid lines color set to a softer white
+        },
+      },
+      y: {
+        ticks: {
+          color: "#E0E0E0", // Y-axis labels color set to a softer white
+          font: {
+            size: 14,
+          },
+        },
+        grid: {
+          color: "rgba(224, 224, 224, 0.2)", // Y-axis grid lines color set to a softer white
+        },
+      },
+    },
   };
 
   return (
-    <div className="flex bg-gray-800 text-yellow-400">
+    <div className="flex bg-gray-900 text-gray-100">
       {/* Sidebar */}
       <Sidebar />
 
@@ -141,9 +166,9 @@ const Dashboard = () => {
         <Navbar />
 
         {/* Content area */}
-        <main className="flex-1 p-6 bg-gray-700 text-yellow-400">
+        <main className="flex-1 p-6 bg-gray-800 text-gray-100">
           {/* Cards Section */}
-          <div className="flex gap-2 mb-6 mt-20">
+          <div className="flex gap-4 mb-6 mt-20">
             {[
               "Total Tasks",
               "Completed Tasks",
@@ -152,23 +177,35 @@ const Dashboard = () => {
             ].map((label, index) => (
               <motion.div
                 key={index}
-                className="bg-gray-600 p-6 rounded-lg shadow-md w-full md:w-1/2 lg:w-1/4"
-                initial={{ scale: 0.8, opacity: 0 }}
+                className="bg-gray-700 p-6 rounded-lg shadow-lg w-full md:w-1/2 lg:w-1/4"
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 + index * 0.2 }}>
-                <h2 className="text-xl font-semibold text-red-500">
+                transition={{ duration: 0.5 + index * 0.2 }}
+              >
+                <h2
+                  className={`text-xl font-semibold ${
+                    index === 0
+                      ? "text-yellow-300" // Change heading color for "Total Tasks"
+                      : index === 1
+                      ? "text-green-400" // Change heading color for "Completed Tasks"
+                      : index === 2
+                      ? "text-blue-400" // Change heading color for "Tasks In Progress"
+                      : "text-red-400" // Change heading color for "Todos"
+                  }`}
+                >
                   {label}
                 </h2>
                 <p
                   className={`text-3xl font-bold ${
                     index === 0
-                      ? "text-green-200"
+                      ? "text-teal-300"
                       : index === 1
-                      ? "text-green-300"
+                      ? "text-teal-300"
                       : index === 2
-                      ? "text-green-400"
-                      : "text-green-500"
-                  }`}>
+                      ? "text-teal-300"
+                      : "text-teal-300"
+                  }`}
+                >
                   <CountUp
                     end={Object.values(taskData)[index]}
                     duration={1.5}
@@ -182,25 +219,27 @@ const Dashboard = () => {
           <div className="flex gap-6">
             {/* Task Priority Chart */}
             <motion.div
-              className="bg-gray-600 p-4 rounded-lg shadow-md w-full lg:w-1/2 "
+              className="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}>
-              <h2 className="text-lg font-semibold text-yellow-300 mb-4 text-center">
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
                 Task Priority Chart
               </h2>
-              <div className=" text-black w-full h-[350px]">
+              <div className="w-full h-[350px]">
                 <Pie data={priorityChartData} options={chartOptions} />
               </div>
             </motion.div>
 
             {/* Task Status Chart */}
             <motion.div
-              className="bg-gray-600 p-4 rounded-lg shadow-md w-full lg:w-1/2"
+              className="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}>
-              <h2 className="text-lg font-semibold text-yellow-300 mb-4 text-center">
+              transition={{ duration: 0.7 }}
+            >
+              <h2 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
                 Task Status Chart
               </h2>
               <div className="w-full h-[350px]">
