@@ -10,6 +10,7 @@ import {
   Select,
   Popconfirm,
 } from "antd";
+import '../index.css';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -202,7 +203,8 @@ const Users = () => {
         )}
         <Modal
           title="Add User"
-          visible={isAddModalVisible}
+          // visible={isAddModalVisible}
+          open={isAddModalVisible}  // Change visible to open
           onOk={handleOkAdd}
           onCancel={handleCancelAdd}
           className="add-user-modal"
@@ -264,7 +266,8 @@ const Users = () => {
         </Modal>
         <Modal
           title="Edit User"
-          visible={isEditModalVisible}
+          // visible={isEditModalVisible}
+          open={isEditModalVisible}  // Change visible to open
           onOk={handleOkEdit}
           onCancel={handleCancelEdit}
           className="add-user-modal"
@@ -288,7 +291,7 @@ const Users = () => {
               name="username"
               label="Username"
               rules={[
-                { required: true, message: "Please input the username!" },
+                { message: "Please input the username!" },
               ]}>
               <Input />
             </Form.Item>
@@ -297,7 +300,7 @@ const Users = () => {
               label="Email"
               rules={[
                 {
-                  required: true,
+                  // required: true,
                   type: "email",
                   message: "Please input a valid email!",
                 },
@@ -308,14 +311,14 @@ const Users = () => {
               name="password"
               label="Password"
               rules={[
-                { required: true, message: "Please input the password!" },
+                { message: "Please input the password!" },
               ]}>
               <Input.Password />
             </Form.Item>
             <Form.Item
               name="role"
               label="Role"
-              rules={[{ required: true, message: "Please select a role!" }]}>
+              rules={[{  message: "Please select a role!" }]}>
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
                 <Option value="manager">Manager</Option>
