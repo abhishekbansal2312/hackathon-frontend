@@ -5,28 +5,29 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { FaFlag } from "react-icons/fa";
+import { FaFlag, FaCheck, FaExclamationTriangle, FaBug } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Cookies from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 
 const TaskDetails = () => {
-  const { id } = useParams(); // Get task ID from URL
+  const { id } = useParams();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newActivity, setNewActivity] = useState({
     type: "assigned",
     activity: "",
-    date: "",
+    date: new Date().toISOString().split("T")[0], // Default date to today
   });
   const [showPopup, setShowPopup] = useState(false);
 
-  // Fetch the specific task details
   useEffect(() => {
     const fetchTask = async () => {
       try {
         const response = await fetch(`http://localhost:3006/task/task/${id}`, {
           method: "GET",
-          credentials: "include", // Include credentials such as cookies
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -61,7 +62,7 @@ const TaskDetails = () => {
         `http://localhost:3006/task/task/${id}/add-activity`,
         {
           method: "POST",
-          credentials: "include", // Include credentials such as cookies
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -73,7 +74,6 @@ const TaskDetails = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      // Refresh the task details after adding activity
       const updatedResponse = await fetch(
         `http://localhost:3006/task/task/${id}`,
         {
@@ -91,8 +91,8 @@ const TaskDetails = () => {
 
       const updatedTask = await updatedResponse.json();
       setTask(updatedTask);
-      setNewActivity({ type: "assigned", activity: "", date: "" });
-      setShowPopup(false); // Close the popup
+      setNewActivity({ type: "assigned", activity: "", date: new Date().toISOString().split("T")[0] });
+      setShowPopup(false);
     } catch (error) {
       console.error("Error adding activity:", error);
       setError("Failed to add activity.");
@@ -108,92 +108,71 @@ const TaskDetails = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      {/* Add Activity Button */}
-      <div className="flex justify-end mb-4">
+    <div className="container mx-auto p-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-bold text-gray-800">{task.title}</h1>
         <button
           onClick={() => setShowPopup(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+        >
           Add Activity
         </button>
       </div>
 
-      {/* Task Details */}
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-4">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}>
-          <h1 className="text-3xl font-bold mb-4">{task.title}</h1>
-          <p>
-            <strong>Priority:</strong> {task.priority}
-          </p>
-          <p>
-            <strong>Status:</strong> {task.status}
-          </p>
-          <p>
-            <strong>Date Created:</strong>{" "}
-            {new Date(task.date).toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Assigned Date:</strong>{" "}
-            {new Date(task.assignedDate).toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Deadline:</strong>{" "}
-            {new Date(task.deadlineDate).toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Team:</strong> {task.team.join(", ")}
-          </p>
-        </motion.div>
+      <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+        <h2 className="text-2xl font-semibold mb-4">Task Details</h2>
+        <p><strong>Priority:</strong> {task.priority}</p>
+        <p><strong>Status:</strong> {task.status}</p>
+        <p><strong>Date Created:</strong> {new Date(task.date).toLocaleDateString()}</p>
+        <p><strong>Assigned Date:</strong> {new Date(task.assignedDate).toLocaleDateString()}</p>
+        <p><strong>Deadline:</strong> {new Date(task.deadlineDate).toLocaleDateString()}</p>
+        <p><strong>Team:</strong> {task.team.join(", ")}</p>
       </div>
 
-      {/* Activities Timeline */}
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Activities</h2>
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-semibold mb-4">Activities</h2>
         <VerticalTimeline>
           {task.activities.map((activity, index) => (
             <VerticalTimelineElement
               key={index}
               date={new Date(activity.date).toLocaleDateString()}
-              icon={<FaFlag />}
-              className="timeline-element"
+              icon={getActivityIcon(activity.type)}
+              iconStyle={getIconStyle(activity.type)}
               contentStyle={{ background: "#fff", color: "#000" }}
               contentArrowStyle={{ borderRight: "7px solid #fff" }}
-              iconStyle={{ background: "#3498db", color: "#fff" }}
-              position="left" // Ensures all activities are on the left
+              className="timeline-element"
             >
               <h3 className="text-lg font-semibold">
                 {activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}
               </h3>
               <p>{activity.activity}</p>
               <p className="text-gray-600">By User: {activity.by}</p>
+              
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
       </div>
 
-      {/* Popup for Adding Activity */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <motion.div
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h2 className="text-xl font-semibold mb-4">Add New Activity</h2>
+            className="bg-white p-6 rounded-lg shadow-lg w-96"
+          >
+            <h2 className="text-2xl font-semibold mb-4">Add New Activity</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col">
-                <label htmlFor="type" className="mb-1 font-medium">
-                  Type
-                </label>
+                <label htmlFor="type" className="mb-1 font-medium">Type</label>
                 <select
                   id="type"
                   name="type"
                   value={newActivity.type}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2">
+                  className="border border-gray-300 rounded p-2"
+                  required
+                >
                   <option value="assigned">Assigned</option>
                   <option value="started">Started</option>
                   <option value="in progress">In Progress</option>
@@ -203,9 +182,7 @@ const TaskDetails = () => {
                 </select>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="activity" className="mb-1 font-medium">
-                  Activity
-                </label>
+                <label htmlFor="activity" className="mb-1 font-medium">Activity</label>
                 <textarea
                   id="activity"
                   name="activity"
@@ -213,12 +190,11 @@ const TaskDetails = () => {
                   onChange={handleChange}
                   rows="4"
                   className="border border-gray-300 rounded p-2"
+                  required
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="date" className="mb-1 font-medium">
-                  Date
-                </label>
+                <label htmlFor="date" className="mb-1 font-medium">Date</label>
                 <input
                   type="date"
                   id="date"
@@ -226,18 +202,21 @@ const TaskDetails = () => {
                   value={newActivity.date}
                   onChange={handleChange}
                   className="border border-gray-300 rounded p-2"
+                  required
                 />
               </div>
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
                   onClick={() => setShowPopup(false)}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
                   Add Activity
                 </button>
               </div>
@@ -247,6 +226,36 @@ const TaskDetails = () => {
       )}
     </div>
   );
+};
+
+const getActivityIcon = (type) => {
+  switch (type) {
+    case "bug":
+      return <FaBug />;
+    case "completed":
+      return <FaCheck />;
+    case "assigned":
+    case "started":
+    case "in progress":
+      return <FaFlag />;
+    default:
+      return <FaFlag />;
+  }
+};
+
+const getIconStyle = (type) => {
+  switch (type) {
+    case "bug":
+      return { background: "red", color: "#fff" };
+    case "completed":
+      return { background: "green", color: "#fff" };
+    case "assigned":
+    case "started":
+    case "in progress":
+      return { background: "#007bff", color: "#fff" };
+    default:
+      return { background: "#007bff", color: "#fff" };
+  }
 };
 
 export default TaskDetails;

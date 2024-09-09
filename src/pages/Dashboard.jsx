@@ -12,7 +12,7 @@ const Dashboard = () => {
     totalTasks: 0,
     computedTasks: 0,
     tasksInProgress: 0,
-    todos: 0,
+    pending: 0,
     priorityData: { high: 0, medium: 0, normal: 0, low: 0 },
   });
 
@@ -45,7 +45,7 @@ const Dashboard = () => {
         const tasksInProgress = data.filter(
           (task) => task.status === "in-progress"
         ).length;
-        const todos = data.filter((task) => task.status === "pending").length;
+        const pending = data.filter((task) => task.status === "pending").length;
         const priorityData = {
           high: data.filter((task) => task.priority === "high").length,
           medium: data.filter((task) => task.priority === "medium").length,
@@ -57,7 +57,7 @@ const Dashboard = () => {
           totalTasks,
           computedTasks,
           tasksInProgress,
-          todos,
+          pending,
           priorityData,
         });
       } else {
@@ -91,7 +91,7 @@ const Dashboard = () => {
         data: [
           taskData.computedTasks,
           taskData.tasksInProgress,
-          taskData.todos,
+          taskData.pending,
         ],
         backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
       },
@@ -173,7 +173,7 @@ const Dashboard = () => {
               "Total Tasks",
               "Completed Tasks",
               "Tasks In Progress",
-              "Todos",
+              "Pending",
             ].map((label, index) => (
               <motion.div
                 key={index}
@@ -190,7 +190,7 @@ const Dashboard = () => {
                       ? "text-green-400" // Change heading color for "Completed Tasks"
                       : index === 2
                       ? "text-blue-400" // Change heading color for "Tasks In Progress"
-                      : "text-red-400" // Change heading color for "Todos"
+                      : "text-red-400" // Change heading color for "pending"
                   }`}
                 >
                   {label}
