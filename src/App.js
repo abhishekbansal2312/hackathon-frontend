@@ -11,6 +11,9 @@ import ContactPage from "./components/ContactUs";
 import Users from "./pages/Users";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ProtectedRouteAdminOnly from "./components/ProtectedRouteAdminOnly.jsx";
+import Pending from "./pages/Pending";
+import Progress from "./pages/Progress";
+import Completed from "./pages/Completed";
 
 const App = () => {
   return (
@@ -30,6 +33,30 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pending"
+          element={
+            <ProtectedRoute>
+              <Pending />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/inprogress"
+          element={
+            <ProtectedRoute>
+              <Progress />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/completed"
+          element={
+            <ProtectedRoute>
+              <Completed />
             </ProtectedRoute>
           }
         />

@@ -11,10 +11,14 @@ import {
 } from "react-icons/ai";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext"; // Import ThemeContext
 
 const TaskCard = ({ task, onDelete }) => {
   const [role, setRole] = useState("");
+
+  // Use ThemeContext to get the theme
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -41,27 +45,27 @@ const TaskCard = ({ task, onDelete }) => {
           icon: (
             <AiOutlineExclamationCircle size={24} className="text-red-500" />
           ),
-          color: "bg-red-100",
+          color: "bg-red-100 ", // Dark mode color
         };
       case "medium":
         return {
           icon: <AiOutlineInfoCircle size={24} className="text-yellow-500" />,
-          color: "bg-yellow-100",
+          color: "bg-yellow-100 ", // Dark mode color
         };
       case "normal":
         return {
           icon: <AiOutlineFlag size={24} className="text-blue-500" />,
-          color: "bg-blue-100",
+          color: "bg-blue-100", // Dark mode color
         };
       case "low":
         return {
           icon: <AiOutlineCheckCircle size={24} className="text-green-500" />,
-          color: "bg-green-100",
+          color: "bg-green-100", // Dark mode color
         };
       default:
         return {
           icon: <AiOutlineFlag size={24} className="text-gray-500" />,
-          color: "bg-gray-100",
+          color: "bg-gray-100", // Dark mode color
         };
     }
   };
@@ -91,25 +95,35 @@ const TaskCard = ({ task, onDelete }) => {
   };
 
   return (
-    <div className="bg-white relative pt-3 relative shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
+    <div
+      className={`relative pt-3 shadow-md rounded-lg border transition-shadow duration-200 ease-in-out ${
+        theme === "dark"
+          ? "bg-gray-700 border-gray-700 text-white hover:shadow-lg"
+          : "bg-white border-gray-200 text-gray-800 hover:shadow-lg"
+      }`}>
       {/* Priority Icon */}
       <div
-        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full flex items-center justify-center ${color}`}
-      >
+        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
         {icon}
       </div>
 
       {/* Task Header */}
       <div className="pl-12">
         <Link to={`/tasks/${_id}`}>
-          <h2 className="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600">
+          <h2
+            className={`text-lg font-semibold cursor-pointer hover:text-blue-600 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}>
             {title}
           </h2>
         </Link>
       </div>
 
       {/* Task Details */}
-      <div className="pl-6 mt-4 text-gray-700">
+      <div
+        className={`pl-6 mt-4 ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}>
         <div className="flex items-center mb-2">
           <AiOutlineCalendar className="text-red-500 mr-2" />
           <span>Deadline: {new Date(deadlineDate).toLocaleDateString()}</span>
@@ -141,8 +155,7 @@ const TaskCard = ({ task, onDelete }) => {
           {team.slice(0, 4).map((member, index) => (
             <div
               key={index}
-              className={`w-8 h-8 flex items-center justify-center rounded-full text-white ${getRandomColor()}`}
-            >
+              className={`w-8 h-8 flex items-center justify-center rounded-full text-white ${getRandomColor()}`}>
               {getInitials(member.username)}
             </div>
           ))}
@@ -159,8 +172,11 @@ const TaskCard = ({ task, onDelete }) => {
         <div className="absolute bottom-4 right-4">
           <button
             onClick={() => onDelete(_id)}
-            className="text-red-500 hover:text-red-700 transition-colors duration-200"
-          >
+            className={`transition-colors duration-200 ${
+              theme === "dark"
+                ? "text-red-400 hover:text-red-600"
+                : "text-red-500 hover:text-red-700"
+            }`}>
             <AiOutlineDelete size={20} />
           </button>
         </div>

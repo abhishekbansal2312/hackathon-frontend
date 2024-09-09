@@ -5,6 +5,9 @@ import {
   FaCalendarAlt,
   FaCog,
   FaUsers,
+  FaCheckCircle,
+  FaSpinner,
+  FaClock,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext"; // Adjust the path as needed
@@ -12,6 +15,7 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 // import ThemeToggle from "./ThemeToggle"; // Adjust the path as needed
 import "../App.css";
+
 const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   const [role, setRole] = useState("");
@@ -35,7 +39,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/dashboard"
-            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+            className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-2 ${
               theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}>
             <FaTachometerAlt className="mr-3 text-xl" />
@@ -47,7 +51,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/tasks"
-            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-3 hover:scale-105 ${
+            className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-3 hover:scale-105 ${
               theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}>
             <FaTasks className="mr-3 text-xl" />
@@ -55,36 +59,48 @@ const Sidebar = () => {
           </Link>
         </li>
 
-        {/* Calendar Link */}
+        {/* Pending Link */}
         <li>
           <Link
-            to="/calendar"
-            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+            to="/pending"
+            className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-2 ${
               theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}>
-            <FaCalendarAlt className="mr-3 text-xl" />
-            <span className="text-lg font-medium">Calendar</span>
+            <FaClock className="mr-3 text-xl" />
+            <span className="text-lg font-medium">Pending</span>
           </Link>
         </li>
 
-        {/* Settings Link */}
+        {/* In Progress Link */}
         <li>
           <Link
-            to="/settings"
-            className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+            to="/inprogress"
+            className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-2 ${
               theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}>
-            <FaCog className="mr-3 text-xl" />
-            <span className="text-lg font-medium">Settings</span>
+            <FaSpinner className="mr-3 text-xl" />
+            <span className="text-lg font-medium">In Progress</span>
           </Link>
         </li>
 
-        {/* Users Link */}
+        {/* Completed Link */}
+        <li>
+          <Link
+            to="/completed"
+            className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-2 ${
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+            }`}>
+            <FaCheckCircle className="mr-3 text-xl" />
+            <span className="text-lg font-medium">Completed</span>
+          </Link>
+        </li>
+
+        {/* Users Link (Visible only to admins) */}
         {role === "admin" && (
           <li>
             <Link
               to="/users"
-              className={`flex items-center p-3 rounded-md hover:bg-gray-700 transition-colors duration-200 transform hover:translate-x-2 ${
+              className={`flex items-center p-3 rounded-md hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 transform hover:translate-x-2 ${
                 theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
               }`}>
               <FaUsers className="mr-3 text-xl" />
@@ -93,9 +109,6 @@ const Sidebar = () => {
           </li>
         )}
       </ul>
-
-      {/* Bottom Section with Theme Toggle Button */}
-      {/* Bottom Section */}
       <div className="mt-auto text-center text-sm">
         <p>© 2024 Your Company</p>
       </div>
