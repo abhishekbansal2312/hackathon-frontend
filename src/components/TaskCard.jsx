@@ -1,114 +1,16 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import {
-//   FaCalendarAlt,
-//   FaFlag,
-//   FaUser,
-//   FaTrash,
-//   FaClock,
-// } from "react-icons/fa";
-
-// const TaskCard = ({task, onDelete }) => {
-//   const {
-//     _id,
-//     title,
-//     date,
-//     priority,
-//     status,
-//     assignedDate,
-//     deadlineDate,
-//     team,
-//   } = task;
-
-//   const url1 = `/tasks/${_id}`;
-//   // console.log(url1);
-
-//   return (
-//     <div className="bg-white p-6 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
-//       {/* Task Header */}
-//       <div className="flex items-center justify-between mb-4">
-//         <h2 className="text-xl font-bold text-gray-900"><Link to={url1}>{title}</Link></h2>
-//         <span
-//           className={`px-3 py-1 rounded-full text-xs font-semibold ${
-//             priority === "high"
-//               ? "bg-red-100 text-red-700"
-//               : priority === "normal"
-//               ? "bg-yellow-100 text-yellow-700"
-//               : "bg-green-100 text-green-700"
-//           }`}>
-//           {priority}
-//         </span>
-//       </div>
-
-//       {/* Task Details Grid */}
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-//         {/* Date Created */}
-//         <div className="flex items-center space-x-2">
-//           <FaCalendarAlt className="text-blue-500" />
-//           <span>
-//             <strong>Date Created:</strong> {new Date(date).toLocaleDateString()}
-//           </span>
-//         </div>
-
-//         {/* Status */}
-//         <div className="flex items-center space-x-2">
-//           <FaFlag className="text-yellow-500" />
-//           <span>
-//             <strong>Status:</strong> {status}
-//           </span>
-//         </div>
-
-//         {/* Assigned Date */}
-//         <div className="flex items-center space-x-2">
-//           <FaClock className="text-purple-500" />
-//           <span>
-//             <strong>Assigned Date:</strong>{" "}
-//             {new Date(assignedDate).toLocaleDateString()}
-//           </span>
-//         </div>
-
-//         {/* Deadline Date */}
-//         <div className="flex items-center space-x-2">
-//           <FaClock className="text-red-500" />
-//           <span>
-//             <strong>Deadline Date:</strong>{" "}
-//             {new Date(deadlineDate).toLocaleDateString()}
-//           </span>
-//         </div>
-
-//         {/* Team */}
-//         <div className="flex items-center space-x-2 col-span-2">
-//           <FaUser className="text-green-500" />
-//           <span>
-//             <strong>Team:</strong> {team.length > 0 ? team.join(", ") : "N/A"}
-//           </span>
-//         </div>
-//       </div>
-
-//       {/* Delete Button */}
-//       <div className="flex justify-end mt-6">
-//         <button
-//           onClick={() => onDelete(_id)}
-//           className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200">
-//           <FaTrash />
-//           <span>Delete</span>
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TaskCard;
-
-
-
-
-
 import { Link } from "react-router-dom";
-import { FaCalendarAlt, FaExclamationCircle, FaExclamationTriangle, FaCheckCircle, FaFlag, FaUser, FaTrash, FaClock } from "react-icons/fa";
+import {
+  AiOutlineClockCircle, // New icon for deadline
+  AiOutlineCheckCircle, // New icon for low priority
+  AiOutlineExclamationCircle, // New icon for high priority
+  AiOutlineFlag, // New icon for normal priority
+  AiOutlineInfoCircle, // New icon for medium priority
+  AiOutlineUser, // New icon for team
+  AiOutlineDelete, // New icon for delete button
+  AiOutlineCalendar, // New icon for calendar
+} from "react-icons/ai";
 
 const TaskCard = ({ task, onDelete }) => {
-<<<<<<< HEAD
   const { _id, title, priority, status, deadlineDate, team } = task;
 
   const url1 = `/tasks/${_id}`;
@@ -117,15 +19,32 @@ const TaskCard = ({ task, onDelete }) => {
   const getPriorityIcon = () => {
     switch (priority) {
       case "high":
-        return { icon: <FaExclamationCircle size={24} className="glow text-red-500" />, color: "text-red-500" };
+        return {
+          icon: <AiOutlineExclamationCircle size={24} className="text-red-500" />,
+          color: "bg-red-100",
+        };
       case "medium":
-        return { icon: <FaExclamationTriangle size={24} className="glow text-yellow-500" />, color: "text-yellow-500" };
+        return {
+          icon: (
+            <AiOutlineInfoCircle size={24} className="text-yellow-500" />
+          ),
+          color: "bg-yellow-100",
+        };
       case "normal":
-        return { icon: <FaFlag size={24} className="glow text-blue-500" />, color: "text-blue-500" };
+        return {
+          icon: <AiOutlineFlag size={24} className="text-blue-500" />,
+          color: "bg-blue-100",
+        };
       case "low":
-        return { icon: <FaCheckCircle size={24} className="glow text-green-500" />, color: "text-green-500" };
+        return {
+          icon: <AiOutlineCheckCircle size={24} className="text-green-500" />,
+          color: "bg-green-100",
+        };
       default:
-        return { icon: <FaFlag size={24} className="glow text-gray-500" />, color: "text-gray-500" };
+        return {
+          icon: <AiOutlineFlag size={24} className="text-gray-500" />,
+          color: "bg-gray-100",
+        };
     }
   };
 
@@ -134,79 +53,48 @@ const TaskCard = ({ task, onDelete }) => {
   // Calculate days left
   const deadline = new Date(deadlineDate);
   const today = new Date();
-  const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((deadline - today) / (1000 * 60 * 60 * 24))
+  );
 
-=======
-  const {
-    _id,
-    title,
-    date,
-    priority,
-    status,
-    assignedDate,
-    deadlineDate,
-    team,
-  } = task;
-
->>>>>>> 102c1814c57cc1f786b5e0cf4821fcc20a14a234
   return (
     <div className="bg-white relative p-6 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
-      {/* Flag Icon (larger size, centered in its circle) */}
+      {/* Priority Icon */}
       <div
-        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center ${color}`}
-      >
+        className={`absolute top-[-15px] left-[-15px] w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
         {icon}
       </div>
 
       {/* Task Header */}
-<<<<<<< HEAD
-      <div className="pl-8">
-        <h2 className="text-lg font-semibold text-gray-900">
-          <Link to={url1}>{title}</Link>
-        </h2>
-=======
-      <div className="flex items-center justify-between mb-4">
-        <Link to={`/tasks/${_id}`}>
-          <h2 className="text-xl font-bold text-gray-900 cursor-pointer hover:text-blue-600">
+      <div className="pl-12">
+        <Link to={url1}>
+          <h2 className="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600">
             {title}
           </h2>
         </Link>
->>>>>>> 102c1814c57cc1f786b5e0cf4821fcc20a14a234
-        <span
-          className={`px-3 py-1 rounded-full text-xs font-semibold ${
-            priority === "high"
-              ? "bg-red-100 text-red-700"
-              : priority === "medium"
-              ? "bg-yellow-100 text-yellow-700"
-              : priority === "normal"
-              ? "bg-blue-100 text-blue-700"
-              : "bg-green-100 text-green-700"
-          }`}
-        >
-          {priority.charAt(0).toUpperCase() + priority.slice(1)}
-        </span>
       </div>
 
       {/* Task Details */}
-      <div className="pl-8 mt-4 text-gray-700">
+      <div className="pl-12 mt-4 text-gray-700">
         <div className="flex items-center mb-2">
-          <FaCalendarAlt className="text-red-500 mr-2" />
+          <AiOutlineCalendar className="text-red-500 mr-2" />
           <span>Deadline: {new Date(deadlineDate).toLocaleDateString()}</span>
         </div>
 
         <div className="flex items-center mb-2">
-          <FaFlag className="text-yellow-500 mr-2" />
+          <AiOutlineInfoCircle className="text-yellow-500 mr-2" />
           <span>Status: {status}</span>
         </div>
 
         <div className="flex items-center mb-2">
-          <FaUser className="text-green-500 mr-2" />
+          <AiOutlineUser className="text-green-500 mr-2" />
           <span>Team: {team.length > 0 ? team.join(", ") : "N/A"}</span>
         </div>
 
-        {/* Days Left Line */}
+        {/* Days Left */}
         <div className="flex items-center mt-4">
-          <FaClock className="text-gray-500 mr-2" />
+          <AiOutlineClockCircle className="text-gray-500 mr-2" />
           <span>{daysLeft} days left</span>
         </div>
 
@@ -215,17 +103,19 @@ const TaskCard = ({ task, onDelete }) => {
           {team.slice(0, 4).map((member, index) => (
             <div key={index} className="w-8 h-8 rounded-full bg-gray-300" />
           ))}
-          {team.length > 4 && <span className="text-gray-500">+{team.length - 4}</span>}
+          {team.length > 4 && (
+            <span className="text-gray-500">+{team.length - 4}</span>
+          )}
         </div>
       </div>
 
-      {/* Delete Button (only icon, no circle) */}
+      {/* Delete Button */}
       <div className="absolute bottom-4 right-4">
         <button
           onClick={() => onDelete(_id)}
-          className="text-red-500 hover:text-red-700 transition-colors duration-200"
+       className="text-red-500 hover:text-red-700 transition-colors duration-200"
         >
-          <FaTrash size={20} />
+          <AiOutlineDelete size={20} />
         </button>
       </div>
     </div>

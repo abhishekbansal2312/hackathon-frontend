@@ -3,7 +3,12 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
 import CreateTask from "../components/CreateTask";
-// import { Link } from "react-router-dom";
+import {
+  AiOutlineCheckCircle, 
+  AiOutlineExclamationCircle, 
+  AiOutlineFlag, 
+  AiOutlineInfoCircle, 
+} from "react-icons/ai";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -30,19 +35,14 @@ const Tasks = () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${localStorage.getItem("token")}`
         },
       });
 
-      const contentType = response.headers.get("content-type");
-
-      
-        const data = await response.json();
-        console.log("data is", data);
-        if(data){
-          setTasks(data);
-        }
-       else {
+      const data = await response.json();
+      console.log("data is", data);
+      if (data) {
+        setTasks(data);
+      } else {
         const text = await response.text();
         console.error("Response is not JSON:", text);
         setError("Failed to fetch tasks.");
@@ -69,7 +69,6 @@ const Tasks = () => {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -87,6 +86,48 @@ const Tasks = () => {
     }
   };
 
+  // Priority Icon and Label
+  const PriorityDisplay = ({ priority }) => {
+    const getPriorityIcon = () => {
+      switch (priority) {
+        case "high":
+          return <AiOutlineExclamationCircle size={24} className="text-red-500" />;
+        case "medium":
+          return <AiOutlineInfoCircle size={24} className="text-yellow-500" />;
+        case "normal":
+          return <AiOutlineFlag size={24} className="text-blue-500" />;
+        case "low":
+          return <AiOutlineCheckCircle size={24} className="text-green-500" />;
+        default:
+          return <AiOutlineFlag size={24} className="text-gray-500" />;
+      }
+    };
+
+    const getPriorityColor = () => {
+      switch (priority) {
+        case "high":
+          return "bg-red-100";
+        case "medium":
+          return "bg-yellow-100";
+        case "normal":
+          return "bg-blue-100";
+        case "low":
+          return "bg-green-100";
+        default:
+          return "bg-gray-100";
+      }
+    };
+
+    return (
+      <span
+        className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor()}`}
+      >
+        {getPriorityIcon()}
+        <span>{priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
+      </span>
+    );
+  };
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
       <Sidebar />
@@ -99,9 +140,14 @@ const Tasks = () => {
         <div className="flex items-center space-x-4 mb-8">
           <button
             onClick={openAddTask}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+          >
             Add Task
           </button>
+          <PriorityDisplay priority="high" />
+          <PriorityDisplay priority="medium" />
+          <PriorityDisplay priority="normal" />
+          <PriorityDisplay priority="low" />
         </div>
         {/* Show loading spinner if loading */}
         {loading ? (
@@ -130,7 +176,8 @@ const Tasks = () => {
               <CreateTask onClose={closeAddTask} />
               <button
                 onClick={closeAddTask}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              >
                 &times;
               </button>
             </div>
