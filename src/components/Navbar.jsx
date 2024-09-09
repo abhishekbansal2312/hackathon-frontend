@@ -17,7 +17,9 @@ const Navbar = () => {
       .then((response) => {
         if (response.ok) {
           console.log("Logout successful");
-          navigate("/");
+          localStorage.clear(); 
+          // Clear all data from localStorage
+          navigate("/"); // Redirect to the homepage or login page after logout
         }
       })
       .catch((error) => {
