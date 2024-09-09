@@ -13,7 +13,7 @@ const Dashboard = () => {
     totalTasks: 0,
     computedTasks: 0,
     tasksInProgress: 0,
-    todos: 0,
+    pending: 0,
     priorityData: { high: 0, medium: 0, normal: 0, low: 0 },
   });
 
@@ -48,7 +48,7 @@ const Dashboard = () => {
         const tasksInProgress = data.filter(
           (task) => task.status === "in-progress"
         ).length;
-        const todos = data.filter((task) => task.status === "pending").length;
+        const pending = data.filter((task) => task.status === "pending").length;
         const priorityData = {
           high: data.filter((task) => task.priority === "high").length,
           medium: data.filter((task) => task.priority === "medium").length,
@@ -60,7 +60,7 @@ const Dashboard = () => {
           totalTasks,
           computedTasks,
           tasksInProgress,
-          todos,
+          pending,
           priorityData,
         });
       } else {
@@ -86,14 +86,14 @@ const Dashboard = () => {
   };
 
   const statusChartData = {
-    labels: ["Completed", "In Progress", "Todos"],
+    labels: ["Completed", "In Progress", "Pending"],
     datasets: [
       {
         label: "Number of Tasks",
         data: [
           taskData.computedTasks,
           taskData.tasksInProgress,
-          taskData.todos,
+          taskData.pending,
         ],
         backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
       },
@@ -186,6 +186,7 @@ const Dashboard = () => {
           {/* Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-20">
             {[
+<<<<<<< HEAD
               {
                 label: "Total Tasks",
                 value: taskData.totalTasks,
@@ -207,6 +208,13 @@ const Dashboard = () => {
                 color: theme === "dark" ? "text-red-600" : "text-red-800",
               },
             ].map((item, index) => (
+=======
+              "Total Tasks",
+              "Completed Tasks",
+              "Tasks In Progress",
+              "Pending",
+            ].map((label, index) => (
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
               <motion.div
                 key={index}
                 className={`p-6 rounded-lg shadow-lg ${
@@ -214,9 +222,26 @@ const Dashboard = () => {
                 } flex flex-col items-center`}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
+<<<<<<< HEAD
                 transition={{ duration: 0.5 + index * 0.2 }}>
                 <h2 className={`text-xl font-semibold ${item.color}`}>
                   {item.label}
+=======
+                transition={{ duration: 0.5 + index * 0.2 }}
+              >
+                <h2
+                  className={`text-xl font-semibold ${
+                    index === 0
+                      ? "text-yellow-300" // Change heading color for "Total Tasks"
+                      : index === 1
+                      ? "text-green-400" // Change heading color for "Completed Tasks"
+                      : index === 2
+                      ? "text-blue-400" // Change heading color for "Tasks In Progress"
+                      : "text-red-400" // Change heading color for "pending"
+                  }`}
+                >
+                  {label}
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
                 </h2>
                 <p className="text-3xl font-bold text-black-700 mt-2">
                   <CountUp end={item.value} duration={1.5} />

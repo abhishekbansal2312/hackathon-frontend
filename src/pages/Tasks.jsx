@@ -9,14 +9,33 @@ import {
   AiOutlineFlag,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
+<<<<<<< HEAD
 import { ThemeContext } from "../context/ThemeContext";
+=======
+import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import Cookies from "js-cookie";
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { theme } = useContext(ThemeContext);
+=======
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const token = Cookies.get("token"); // Retrieve the token from cookies
+    if (token) {
+      const decodedToken = jwtDecode(token); // Decode the token to get the role
+      setRole(decodedToken.role); // Set the role in the state
+    }
+  }, []);
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
 
   // Open add task modal
   const openAddTask = () => {
@@ -93,7 +112,11 @@ const Tasks = () => {
       switch (priority) {
         case "high":
           return (
+<<<<<<< HEAD
             <AiOutlineExclamationCircle size={20} className="text-red-500" />
+=======
+            <AiOutlineExclamationCircle size={24} className="text-red-500" />
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
           );
         case "medium":
           return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
@@ -138,6 +161,7 @@ const Tasks = () => {
       <Sidebar />
       <main className="flex-1 p-6">
         <Navbar />
+<<<<<<< HEAD
 
         {/* Priority Display */}
         <div className="mb-8 flex space-x-4 mt-20 text-black">
@@ -152,6 +176,35 @@ const Tasks = () => {
           <PriorityDisplay priority="low" />
         </div>
 
+=======
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
+          Task Dashboard
+        </h2>
+        {/* priority */}
+        {role !== "admin" && (
+          <div className="flex items-center space-x-4 mb-8">
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="medium" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
+        {/* Add a new task */}
+        {role === "admin" && (
+          <div className="flex items-center space-x-4 mb-8">
+            <button
+              onClick={openAddTask}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+            >
+              Add Task
+            </button>
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="medium" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
+>>>>>>> 18ff92f0daf4522bc232e7f05fd6c28c4db516f2
         {/* Show loading spinner if loading */}
         {loading ? (
           <p className="text-lg">Loading tasks...</p>
