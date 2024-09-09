@@ -7,8 +7,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { FaFlag, FaCheck, FaExclamationTriangle, FaBug } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
+
 
 const TaskDetails = () => {
   const { id } = useParams();
@@ -38,6 +37,7 @@ const TaskDetails = () => {
         }
 
         const data = await response.json();
+        console.log("Task details:", data);
         setTask(data);
       } catch (error) {
         console.error("Error fetching task details:", error);
@@ -91,7 +91,11 @@ const TaskDetails = () => {
 
       const updatedTask = await updatedResponse.json();
       setTask(updatedTask);
-      setNewActivity({ type: "assigned", activity: "", date: new Date().toISOString().split("T")[0] });
+      setNewActivity({
+        type: "assigned",
+        activity: "",
+        date: new Date().toISOString().split("T")[0],
+      });
       setShowPopup(false);
     } catch (error) {
       console.error("Error adding activity:", error);
@@ -121,12 +125,32 @@ const TaskDetails = () => {
 
       <div className="bg-white shadow-md rounded-lg p-6 mb-4">
         <h2 className="text-2xl font-semibold mb-4">Task Details</h2>
-        <p><strong>Priority:</strong> {task.priority}</p>
-        <p><strong>Status:</strong> {task.status}</p>
-        <p><strong>Date Created:</strong> {new Date(task.date).toLocaleDateString()}</p>
-        <p><strong>Assigned Date:</strong> {new Date(task.assignedDate).toLocaleDateString()}</p>
-        <p><strong>Deadline:</strong> {new Date(task.deadlineDate).toLocaleDateString()}</p>
-        <p><strong>Team:</strong> {task.team.join(", ")}</p>
+        <p>
+          <strong>Priority:</strong> {task.priority}
+        </p>
+        <p>
+          <strong>Status:</strong> {task.status}
+        </p>
+        <p>
+          <strong>Date Created:</strong>{" "}
+          {new Date(task.date).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Assigned Date:</strong>{" "}
+          {new Date(task.assignedDate).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Deadline:</strong>{" "}
+          {new Date(task.deadlineDate).toLocaleDateString()}
+        </p>
+        <p className="flex items-center gap-2 overflow-x-auto">
+          <strong>Team:</strong>
+          {task.team.map((user) => (
+            <span key={user._id}>
+              {user.username},
+            </span>
+          ))}
+        </p>
       </div>
 
       <div className="bg-white shadow-md rounded-lg p-6">
@@ -146,8 +170,7 @@ const TaskDetails = () => {
                 {activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}
               </h3>
               <p>{activity.activity}</p>
-              <p className="text-gray-600">By User: {activity.by}</p>
-              
+              <p className="text-gray-600">By User: {activity.userName}</p>
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
@@ -164,7 +187,9 @@ const TaskDetails = () => {
             <h2 className="text-2xl font-semibold mb-4">Add New Activity</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col">
-                <label htmlFor="type" className="mb-1 font-medium">Type</label>
+                <label htmlFor="type" className="mb-1 font-medium">
+                  Type
+                </label>
                 <select
                   id="type"
                   name="type"
@@ -182,7 +207,9 @@ const TaskDetails = () => {
                 </select>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="activity" className="mb-1 font-medium">Activity</label>
+                <label htmlFor="activity" className="mb-1 font-medium">
+                  Activity
+                </label>
                 <textarea
                   id="activity"
                   name="activity"
@@ -194,7 +221,9 @@ const TaskDetails = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="date" className="mb-1 font-medium">Date</label>
+                <label htmlFor="date" className="mb-1 font-medium">
+                  Date
+                </label>
                 <input
                   type="date"
                   id="date"
