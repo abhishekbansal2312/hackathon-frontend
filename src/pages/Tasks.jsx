@@ -19,6 +19,7 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
 
   // Use ThemeContext to get the theme
   const { theme } = useContext(ThemeContext);
@@ -27,7 +28,8 @@ const Tasks = () => {
     const token = Cookies.get("token");
     if (token) {
       const decodedToken = jwtDecode(token);
-      setRole(decodedToken.role);
+      setRole(decodedToken.role); // Extract user role
+      setUserId(decodedToken._id); // Extract user ID
     }
   }, []);
 
@@ -39,36 +41,51 @@ const Tasks = () => {
     setIsAddTaskOpen(false);
   };
 
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:3006/task/tasks", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (data) {
-        setTasks(data);
-      } else {
-        const text = await response.text();
-        console.error("Response is not JSON:", text);
-        setError("Failed to fetch tasks.");
-      }
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-      setError("Error fetching tasks.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchTasks = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:3006/task/tasks", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+        if (data) {
+          let filteredTasks;
+
+          if (role === "admin") {
+            // Admins see all tasks
+            filteredTasks = data;
+          } else {
+            // Regular users see only tasks assigned to them
+            filteredTasks = data.filter(task =>
+              task.team.some(member => member._id === userId) // Check if userId is in the team array
+            );
+            console.log("data", data);
+            console.log("filteredTasks", filteredTasks);
+            console.log("userId is", userId);
+          }
+
+          setTasks(filteredTasks);
+        } else {
+          const text = await response.text();
+          console.error("Response is not JSON:", text);
+          setError("Failed to fetch tasks.");
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        setError("Error fetching tasks.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTasks();
-  }, []);
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -103,8 +120,6 @@ const Tasks = () => {
           return (
             <AiOutlineExclamationCircle size={20} className="text-red-500" />
           );
-        case "medium":
-          return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
         case "normal":
           return <AiOutlineFlag size={20} className="text-blue-500" />;
         case "low":
@@ -118,8 +133,6 @@ const Tasks = () => {
       switch (priority) {
         case "high":
           return "bg-red-100";
-        case "medium":
-          return "bg-yellow-100";
         case "normal":
           return "bg-blue-100";
         case "low":
@@ -150,9 +163,8 @@ const Tasks = () => {
           Task Dashboard
         </h2>
         {role !== "admin" && (
-          <div className="flex items-center space-x-4 mb-8 ">
+          <div className="flex items-center space-x-4 mb-8">
             <PriorityDisplay priority="high" />
-            <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>
@@ -165,7 +177,6 @@ const Tasks = () => {
               Add Task
             </button>
             <PriorityDisplay priority="high" />
-            <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>

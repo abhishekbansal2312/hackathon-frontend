@@ -7,7 +7,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { FaFlag, FaCheck, FaExclamationTriangle, FaBug } from "react-icons/fa";
 import { motion } from "framer-motion";
-
+import '../App.css';
 
 const TaskDetails = () => {
   const { id } = useParams();
@@ -123,8 +123,9 @@ const TaskDetails = () => {
         </button>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-        <h2 className="text-2xl font-semibold mb-4">Task Details</h2>
+      {/* Task Details Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-blue-200 shadow-lg rounded-lg p-6 mb-4 border border-blue-300">
+        <h2 className="text-2xl font-semibold mb-4 text-blue-800">Task Details</h2>
         <p>
           <strong>Priority:</strong> {task.priority}
         </p>
@@ -146,15 +147,16 @@ const TaskDetails = () => {
         <p className="flex items-center gap-2 overflow-x-auto">
           <strong>Team:</strong>
           {task.team.map((user) => (
-            <span key={user._id}>
+            <span key={user._id} className="text-blue-600">
               {user.username},
             </span>
           ))}
         </p>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-semibold mb-4">Activities</h2>
+      {/* Activities Section */}
+      <div className="bg-gradient-to-r from-green-50 to-green-200 shadow-lg rounded-lg p-6 border border-green-300">
+        <h2 className="text-2xl font-semibold mb-4 text-green-800">Activities</h2>
         <VerticalTimeline>
           {task.activities.map((activity, index) => (
             <VerticalTimelineElement
@@ -162,11 +164,11 @@ const TaskDetails = () => {
               date={new Date(activity.date).toLocaleDateString()}
               icon={getActivityIcon(activity.type)}
               iconStyle={getIconStyle(activity.type)}
-              contentStyle={{ background: "#fff", color: "#000" }}
-              contentArrowStyle={{ borderRight: "7px solid #fff" }}
+              contentStyle={{ background: "#f9f9f9", color: "#000", borderRadius: "10px" }}
+              contentArrowStyle={{ borderRight: "7px solid #f9f9f9" }}
               className="timeline-element"
             >
-              <h3 className="text-lg font-semibold">
+              <h3 className="text-lg font-semibold text-blue-900">
                 {activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}
               </h3>
               <p>{activity.activity}</p>
@@ -238,13 +240,13 @@ const TaskDetails = () => {
                 <button
                   type="button"
                   onClick={() => setShowPopup(false)}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                 >
                   Add Activity
                 </button>
@@ -257,15 +259,20 @@ const TaskDetails = () => {
   );
 };
 
+// Helper functions
 const getActivityIcon = (type) => {
   switch (type) {
+    case "assigned":
+      return <FaFlag />;
+    case "started":
+      return <FaCheck />;
+    case "in progress":
+      return <FaExclamationTriangle />;
     case "bug":
       return <FaBug />;
     case "completed":
       return <FaCheck />;
-    case "assigned":
-    case "started":
-    case "in progress":
+    case "commented":
       return <FaFlag />;
     default:
       return <FaFlag />;
@@ -274,16 +281,20 @@ const getActivityIcon = (type) => {
 
 const getIconStyle = (type) => {
   switch (type) {
-    case "bug":
-      return { background: "red", color: "#fff" };
-    case "completed":
-      return { background: "green", color: "#fff" };
     case "assigned":
+      return { background: "#2196F3", color: "#fff" }; // Blue
     case "started":
+      return { background: "#FFC107", color: "#fff" }; // Amber
     case "in progress":
-      return { background: "#007bff", color: "#fff" };
+      return { background: "#FF5722", color: "#fff" }; // Deep Orange
+    case "bug":
+      return { background: "#F44336", color: "#fff" }; // Red
+    case "completed":
+      return { background: "#4CAF50", color: "#fff" }; // Green
+    case "commented":
+      return { background: "#9E9E9E", color: "#fff" }; // Grey
     default:
-      return { background: "#007bff", color: "#fff" };
+      return { background: "#2196F3", color: "#fff" }; // Default Blue
   }
 };
 
