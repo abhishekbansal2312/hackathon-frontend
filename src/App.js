@@ -10,6 +10,7 @@ import AboutUs from "./components/AboutUs";
 import ContactPage from "./components/ContactUs";
 import Users from "./pages/Users";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectedRouteAdminOnly from "./components/ProtectedRouteAdminOnly.jsx";
 
 const App = () => {
   return (
@@ -24,29 +25,43 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/tasks" element={
+        <Route
+          path="/tasks"
+          element={
             <ProtectedRoute>
               <Tasks />
             </ProtectedRoute>
-          } />
-        <Route path="/tasks/:id" element={
+          }
+        />
+        <Route
+          path="/tasks/:id"
+          element={
             <ProtectedRoute>
               <TasksDetails />
             </ProtectedRoute>
-          } />
+          }
+        />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={
+        <Route
+          path="/register"
+          element={
             <ProtectedRoute>
               <Register />
             </ProtectedRoute>
-          } />
+          }
+        />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactPage />} />\
-        <Route path="/users" element={
+        <Route
+          path="/users"
+          element={
             <ProtectedRoute>
-              <Users />
+              <ProtectedRouteAdminOnly>
+                <Users />
+              </ProtectedRouteAdminOnly>
             </ProtectedRoute>
-          } />
+          }
+        />
       </Routes>
     </Router>
   );

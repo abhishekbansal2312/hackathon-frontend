@@ -39,6 +39,9 @@ const Users = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      const cookie = document.cookie;
+      console.log("cookie is",cookie);
+      console.log("data is",data);
       setUsers(data);
     } catch (error) {
       setError(error.message || "Error fetching users.");
