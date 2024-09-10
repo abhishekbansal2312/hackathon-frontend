@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const CreateTask = ({ onClose }) => {
   // State for form inputs
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("normal");
   const [status, setStatus] = useState("pending");
   const [assignedDate, setAssignedDate] = useState(
@@ -19,6 +20,7 @@ const CreateTask = ({ onClose }) => {
 
     const newTask = {
       title,
+      description,
       priority,
       status,
       assignedDate,
@@ -111,6 +113,16 @@ const CreateTask = ({ onClose }) => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              aria-required="true"
+            />
+          </div>
+          <div className="col-span-1">
+            <label className="block text-gray-700">Description:</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               aria-required="true"

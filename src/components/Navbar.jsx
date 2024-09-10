@@ -58,7 +58,7 @@ const Navbar = () => {
             Welcome <span style={{ color: "#3498db" }}>{userName}</span>
           </p>
 
-          <Link
+          {/* <Link
             to="/about"
             className="hover:text-blue-500 transition duration-200">
             About
@@ -67,7 +67,7 @@ const Navbar = () => {
             to="/contact"
             className="hover:text-blue-500 transition duration-200">
             Contact
-          </Link>
+          </Link> */}
 
           {/* Theme Toggle Button */}
           <ThemeToggle />

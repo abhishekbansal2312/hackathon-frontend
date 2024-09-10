@@ -43,10 +43,10 @@ const AboutUs = () => {
       {/* Back to Dashboard Button */}
       <div className="absolute top-6 left-6">
         <Link
-          to="/dashboard" // Adjust the route to match your dashboard path
+          to="/" // Adjust the route to match your dashboard path
           className="inline-block px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300"
         >
-          Back to Dashboard
+          Back to home
         </Link>
       </div>
 

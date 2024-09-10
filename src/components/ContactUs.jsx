@@ -231,10 +231,10 @@ const ContactPage = () => {
       {/* Go to Dashboard Button */}
       <div className="absolute top-6 left-6 z-10">
         <Link
-          to="/dashboard"
+          to="/"
           className="inline-block px-4 py-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300"
         >
-          Go to Dashboard
+          back to home
         </Link>
       </div>
 

@@ -300,7 +300,6 @@ const Users = () => {
             >
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
-                <Option value="manager">Manager</Option>
                 <Option value="member">Member</Option>
               </Select>
             </Form.Item>
@@ -360,7 +359,6 @@ const Users = () => {
             >
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
-                <Option value="manager">Manager</Option>
                 <Option value="member">Member</Option>
               </Select>
             </Form.Item>

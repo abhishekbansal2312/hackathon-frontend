@@ -38,6 +38,18 @@ const HomePage = () => {
                 </button>
               </Link>
             )}
+            <Link
+              to="/about"
+              className="hover:text-blue-500 transition duration-200 bg-transparent border border-gray-500 py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-300 "
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className="hover:text-blue-500 transition duration-200 bg-transparent border border-gray-500 py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-300"
+            >
+              Contact
+            </Link>
             <Link to="/dashboard">
               <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-2 px-6 rounded-full shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
                 Get Started
