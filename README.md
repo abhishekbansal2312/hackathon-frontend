@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+# 🌟 WorkGrid (MERN Stack)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![MERN](https://img.shields.io/badge/MERN-Stack-61DAFB?logo=mongodb&logoColor=white&style=for-the-badge)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge)
+![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white&style=for-the-badge)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
+![JWT](https://img.shields.io/badge/JWT-000000?logo=JSON%20web%20tokens&logoColor=white&style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white&style=for-the-badge)
+![NPM](https://img.shields.io/badge/NPM-CB3837?logo=npm&logoColor=white&style=for-the-badge)
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📖 Table of Contents
 
-### `npm start`
+1. [About the Project](#about-the-project)
+2. [Features](#features)
+3. [Demo](#demo)
+4. [Screenshots](#screenshots)
+5. [Installation](#installation)
+6. [Usage](#usage)
+7. [Contact](#contact)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📋 About the Project
 
-### `npm test`
+The **WorkGrid** is a web application designed to help teams manage tasks, track tasks progress, and collaborate in real-time. Built with the MERN stack, it offers a modern and intuitive interface.WorkGrid combines powerful task management with engaging visual tools(Piecharts,Graphs) to enhance team productivity and project oversight.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ✨ Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 🗂️ **Task Management**: Create, update, and assign tasks.
+- 📊 **Dashboard**: View overall project progress and timelines.
+- 📈 **Visualization**: Use pie charts and graphs for clear and insightful data representation.
+- 📅 **Activity Timeline**: Track and visualize project milestones and activities.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🎥 Demo
 
-### `npm run eject`
+[Watch the demo video](https://drive.google.com/file/d/1NXmO3PeYObZGUlDM7LdiWAezsYFy8Xd5/view?usp=drive_link ) to see the website in action.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📷 Screenshots
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<img width="946" alt="Dashboard" src="https://github.com/user-attachments/assets/dbb51e2a-30ca-4d2a-a7a2-4693ac55ee22">
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#
 
-## Learn More
+<img width="941" alt="Tasks" src="https://github.com/user-attachments/assets/4d3e6ad3-bbb3-4842-b418-050c3b5cd9a7">
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## ⚙️ Frontend/Backend Installation
 
-### Code Splitting
+To run the application locally, follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Clone the repository(Frontend):
+   ```bash
+   git clone https://github.com/abhishekbansal2312/hackathon-frontend.git
+2. Navigate to the project directory:
+    ```bash
+   cd hackathon-frontend
+3. Install dependencies for frontend:
+    ```bash
+   npm install
+4. Start the server(Frontend):
+   ```bash
+   npm run start
+5. Link for Backend
+   [Go to Backend](https://github.com/Alisherkhan032/hackathon-backend)
+6. Navigate to the project directory:
+    ```bash
+   cd hackathon-backend
+   
+7. Create a .env file and add the following environment variables(Backend):
+    ```bash
+   DB_URI = yourMongooseURI
+   JWT_SECRET=yourJWTsecret
+8. Start the server(Backend):
+   ```bash
+   nodemon app.js
+## Register Admin
 
-### Analyzing the Bundle Size
+To register an admin user through Postman, follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. **Open Postman** and create a new `POST` request.
 
-### Making a Progressive Web App
+2. **Set the request URL** to:
+   http://localhost:3006/auth/register
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. **Set the request method** to `POST`.
 
-### Advanced Configuration
+4. **Go to the "Body" tab** in Postman.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+5. **Select "raw"** and choose `JSON` from the dropdown menu.
 
-### Deployment
+6. **Enter the following JSON data** in the body:
+   ```json
+   {
+    "username": "admin",
+    "email": "admin@xyz.com",
+    "password": "123456789",
+    "role": "admin"
+   }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+https://github.com/user-attachments/assets/6e8f162a-4647-47ea-922d-fab6a8281294
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+7. **Enter the following JSON data**
+   Click "Send" to submit the request.
+
+## 🚀 Usage
+- Access the app at `http://localhost:3000`.
+- **Create Tasks**: Use the dashboard to add new tasks.
+- **Update Tasks**: Edit existing tasks from the task list.
+- **Assign Tasks**: Assign tasks to team members.
+
+## 📬 Contact
+
+**Project Maintainer's:**
+
+- 👤 **Abbas Akbar, Ali Sher Khan, Abhishek Bansal**
+- 🔗 GitHub: [github.com/abbasakbar](https://github.com/abbasakbar1221),[github.com/alisherkhan](https://github.com/Alisherkhan032),[github.com/abhishekbansal](https://github.com/abhishekbansal2312)
+
+
+
+
+
+
