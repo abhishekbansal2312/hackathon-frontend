@@ -3,8 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrello } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 import "../index.css";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 
 const HomePage = () => {
+  const [isLoggedin, setIsLoggedIn] = useState("false");
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   return (
     <div className="bg-black text-white min-h-screen flex flex-col">
       {/* Header with Navbar */}
@@ -19,11 +31,13 @@ const HomePage = () => {
           </div>
           {/* Buttons */}
           <div className="flex space-x-4">
-            <Link to="/login">
-              <button className="bg-transparent border border-gray-500 py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-300">
-                Login
-              </button>
-            </Link>
+            {!isLoggedin && (
+              <Link to="/login">
+                <button className="bg-transparent border border-gray-500 py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                  Login
+                </button>
+              </Link>
+            )}
             <Link to="/dashboard">
               <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-2 px-6 rounded-full shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
                 Get Started

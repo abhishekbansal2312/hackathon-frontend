@@ -46,7 +46,7 @@ const Navbar = () => {
           ? "bg-white text-black z-50"
           : "bg-gray-800 text-white z-50"
       }`}>
-      <div className="flex justify-between items-center px-8 max-w-screen-xl mx-auto">
+      <div className="flex justify-between items-center px-8 ml-8">
         {/* Logo or Title */}
         <h1 className="text-2xl font-bold tracking-wide hover:text-blue-500 transition duration-200">
           <Link to="/">Project Management</Link>
