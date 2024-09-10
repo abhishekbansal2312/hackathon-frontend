@@ -14,6 +14,8 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { ThemeContext } from "../context/ThemeContext";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const { Option } = Select;
 
@@ -26,6 +28,7 @@ const Users = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [form] = Form.useForm();
   const { theme } = useContext(ThemeContext);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -51,6 +54,13 @@ const Users = () => {
 
   useEffect(() => {
     fetchUsers();
+    const token = Cookies.get("token");
+    if(token){
+      const decode = jwtDecode(token);
+      if(decode.role === "admin"){
+        setIsAdmin(true);
+      }
+    }
   }, []);
 
   const handleAddUser = () => {
@@ -150,29 +160,32 @@ const Users = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <div className="flex space-x-2">
-          <Button
-            type="text"
-            icon={<EditOutlined className="text-blue-500" />}
-            onClick={() => handleEditUser(record)}
-          />
-          <Popconfirm
-            title="Are you sure you want to delete this user?"
-            onConfirm={() => handleDelete(record._id)}
-            okText="Yes"
-            cancelText="No"
-            overlayClassName="custom-popconfirm">
+      render: (_, record) =>
+        isAdmin && ( // Only show action buttons if the current user is an admin
+          <div className="flex space-x-2">
             <Button
               type="text"
-              icon={<DeleteOutlined className="text-red-500" />}
-              danger
+              icon={<EditOutlined className="text-blue-500" />}
+              onClick={() => handleEditUser(record)}
             />
-          </Popconfirm>
-        </div>
-      ),
+            <Popconfirm
+              title="Are you sure you want to delete this user?"
+              onConfirm={() => handleDelete(record._id)}
+              okText="Yes"
+              cancelText="No"
+              overlayClassName="custom-popconfirm"
+            >
+              <Button
+                type="text"
+                icon={<DeleteOutlined className="text-red-500" />}
+                danger
+              />
+            </Popconfirm>
+          </div>
+        ),
     },
   ];
+  
 
   return (
     <div
@@ -180,18 +193,22 @@ const Users = () => {
         theme === "dark"
           ? "bg-gray-800 text-white"
           : "bg-gray-100 text-gray-800"
-      }`}>
+      }`}
+    >
       <Sidebar />
       <main className="flex-1 p-8 mt-20">
         <Navbar />
-        <div className="mb-4 flex justify-between items-center">
-          <Button
-            type="primary"
-            className="add-user-button"
-            onClick={handleAddUser}>
-            Add User
-          </Button>
-        </div>
+        {isAdmin && (
+          <div className="mb-4 flex justify-between items-center">
+            <Button
+              type="primary"
+              className="add-user-button"
+              onClick={handleAddUser}
+            >
+              Add User
+            </Button>
+          </div>
+        )}
         {loading ? (
           <Spin size="large" />
         ) : error ? (
@@ -230,24 +247,28 @@ const Users = () => {
             <Button
               key="cancel"
               onClick={handleCancelAdd}
-              className="text-gray-500">
+              className="text-gray-500"
+            >
               Cancel
             </Button>,
             <Button
               key="submit"
               type="primary"
               onClick={handleOkAdd}
-              className="add-user-button">
+              className="add-user-button"
+            >
               Add User
             </Button>,
-          ]}>
+          ]}
+        >
           <Form form={form} layout="vertical">
             <Form.Item
               name="username"
               label="Username"
               rules={[
                 { required: true, message: "Please input the username!" },
-              ]}>
+              ]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
@@ -259,7 +280,8 @@ const Users = () => {
                   type: "email",
                   message: "Please input a valid email!",
                 },
-              ]}>
+              ]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
@@ -267,13 +289,15 @@ const Users = () => {
               label="Password"
               rules={[
                 { required: true, message: "Please input the password!" },
-              ]}>
+              ]}
+            >
               <Input.Password />
             </Form.Item>
             <Form.Item
               name="role"
               label="Role"
-              rules={[{ required: true, message: "Please select a role!" }]}>
+              rules={[{ required: true, message: "Please select a role!" }]}
+            >
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
                 <Option value="manager">Manager</Option>
@@ -292,24 +316,28 @@ const Users = () => {
             <Button
               key="cancel"
               onClick={handleCancelEdit}
-              className="text-gray-500">
+              className="text-gray-500"
+            >
               Cancel
             </Button>,
             <Button
               key="submit"
               type="primary"
               onClick={handleOkEdit}
-              className="add-user-button">
+              className="add-user-button"
+            >
               Save Changes
             </Button>,
-          ]}>
+          ]}
+        >
           <Form form={form} layout="vertical">
             <Form.Item
               name="username"
               label="Username"
               rules={[
                 { required: true, message: "Please input the username!" },
-              ]}>
+              ]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
@@ -321,13 +349,15 @@ const Users = () => {
                   type: "email",
                   message: "Please input a valid email!",
                 },
-              ]}>
+              ]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               name="role"
               label="Role"
-              rules={[{ required: true, message: "Please select a role!" }]}>
+              rules={[{ required: true, message: "Please select a role!" }]}
+            >
               <Select placeholder="Select a role">
                 <Option value="admin">Admin</Option>
                 <Option value="manager">Manager</Option>

@@ -57,7 +57,7 @@ const Pending = () => {
       if (data) {
         let filteredTasks;
 
-        if (role === "admin") {
+        if (role === "admin" || role === "manager") {
           // Admins see all pending tasks
           filteredTasks = data.filter((task) => task.status === "pending");
         } else {
@@ -120,8 +120,6 @@ const Pending = () => {
           return (
             <AiOutlineExclamationCircle size={20} className="text-red-500" />
           );
-        case "medium":
-          return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
         case "normal":
           return <AiOutlineFlag size={20} className="text-blue-500" />;
         case "low":
@@ -135,8 +133,7 @@ const Pending = () => {
       switch (priority) {
         case "high":
           return "bg-red-100";
-        case "medium":
-          return "bg-yellow-100";
+
         case "normal":
           return "bg-blue-100";
         case "low":
@@ -169,7 +166,6 @@ const Pending = () => {
         {role !== "admin" && (
           <div className="flex items-center space-x-4 mb-8 ">
             <PriorityDisplay priority="high" />
-            <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>
@@ -182,7 +178,6 @@ const Pending = () => {
               Add Task
             </button>
             <PriorityDisplay priority="high" />
-            <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>

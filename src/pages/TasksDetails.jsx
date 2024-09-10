@@ -17,6 +17,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../App.css";
 
+
 const TaskDetails = () => {
   const { id } = useParams();
   const [task, setTask] = useState(null);
@@ -28,7 +29,9 @@ const TaskDetails = () => {
     date: new Date().toISOString().split("T")[0], // Default date to today
   });
   const [showPopup, setShowPopup] = useState(false);
-  const [showTimelinePopup, setShowTimelinePopup] = useState(false);
+  const [showTimelinePopup, setShowTimelinePopup] = useState(true);
+
+
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -48,6 +51,7 @@ const TaskDetails = () => {
 
         const data = await response.json();
         setTask(data);
+
       } catch (error) {
         console.error("Error fetching task details:", error);
         setError("Error fetching task details.");
@@ -106,7 +110,7 @@ const TaskDetails = () => {
         date: new Date().toISOString().split("T")[0],
       });
       setShowPopup(false);
-      setShowTimelinePopup(false); // Close timeline popup
+      setShowTimelinePopup(true); // Close timeline popup
     } catch (error) {
       console.error("Error adding activity:", error);
       setError("Failed to add activity.");
@@ -134,12 +138,14 @@ const TaskDetails = () => {
             <div className="space-x-2">
               <button
                 onClick={() => setShowPopup((prev) => !prev)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+              >
                 {showPopup ? "Cancel Activity" : "Add Activity"}
               </button>
               <button
                 onClick={() => setShowTimelinePopup((prev) => !prev)}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+              >
                 {showTimelinePopup ? "Hide Timeline" : "Show Timeline"}
               </button>
             </div>
@@ -190,7 +196,8 @@ const TaskDetails = () => {
                 initial={{ opacity: 0, y: -100 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl text-black">
+                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl text-black"
+              >
                 <h2 className="text-2xl font-semibold mb-4">
                   Add New Activity
                 </h2>
@@ -205,7 +212,8 @@ const TaskDetails = () => {
                       value={newActivity.type}
                       onChange={handleChange}
                       className="border border-gray-300 rounded p-2"
-                      required>
+                      required
+                    >
                       <option value="assigned">Assigned</option>
                       <option value="started">Started</option>
                       <option value="in progress">In Progress</option>
@@ -225,7 +233,8 @@ const TaskDetails = () => {
                       onChange={handleChange}
                       rows="3"
                       className="border border-gray-300 rounded p-2"
-                      required></textarea>
+                      required
+                    ></textarea>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="date" className="mb-1 font-medium">
@@ -245,12 +254,14 @@ const TaskDetails = () => {
                     <button
                       type="button"
                       onClick={() => setShowPopup(false)}
-                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                    >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
                       Submit
                     </button>
                   </div>
@@ -265,14 +276,20 @@ const TaskDetails = () => {
                 {task.activities.map((activity) => (
                   <VerticalTimelineElement
                     key={activity._id}
-                    date={activity.date}
+                    date={
+                      <span style={{ color: "white" }}>
+                        {new Date(activity.date).toISOString().split("T")[0]}
+                      </span>
+                    }
                     iconStyle={{
                       background: getIconBackgroundColor(activity.type),
                       color: "#fff",
                     }}
-                    icon={getActivityIcon(activity.type)}>
+                    icon={getActivityIcon(activity.type)}
+                  >
                     <h3 className="text-xl font-semibold">{activity.type}</h3>
                     <p>{activity.activity}</p>
+                    <p>By : {activity.userName}</p>
                   </VerticalTimelineElement>
                 ))}
               </VerticalTimeline>

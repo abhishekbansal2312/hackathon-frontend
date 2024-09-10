@@ -135,7 +135,7 @@ const CreateTask = ({ onClose }) => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
               <option value="pending">Pending</option>
               <option value="in-progress">In Progress</option>
-              <option value="to-do">Todo</option>
+              <option value="completed">Completed</option>
             </select>
           </div>
           <div className="col-span-1">

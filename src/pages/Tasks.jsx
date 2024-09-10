@@ -57,7 +57,7 @@ const Tasks = () => {
         if (data) {
           let filteredTasks;
 
-          if (role === "admin") {
+          if (role === "admin" || role === "manager") {
             // Admins see all tasks
             filteredTasks = data;
           } else {
@@ -162,14 +162,14 @@ const Tasks = () => {
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
           Task Dashboard
         </h2>
-        {role !== "admin" && (
+        {role === "member" && (
           <div className="flex items-center space-x-4 mb-8">
             <PriorityDisplay priority="high" />
             <PriorityDisplay priority="normal" />
             <PriorityDisplay priority="low" />
           </div>
         )}
-        {role === "admin" && (
+        {(role === "admin" || role === "manager") && (
           <div className="flex items-center space-x-4 mb-8">
             <button
               onClick={openAddTask}

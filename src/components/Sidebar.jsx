@@ -94,7 +94,7 @@ const Sidebar = () => {
         </li>
 
         {/* Users Link (Visible only to admins) */}
-        {role === "admin" && (
+        {(role === "admin" || role === "manager") && (
           <li>
             <Link
               to="/users"

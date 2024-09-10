@@ -13,11 +13,11 @@ const ProtectedRouteAdminOnly = ({ children }) => {
     return <Navigate to="/login" replace />;
   } else {
     const decodedToken = jwtDecode(token); // Decode the JWT token
-    if (decodedToken.role !== "admin") {
+    if (decodedToken.role === "member") {
       // If the user is not an admin, redirect to the dashboard page
       return <Navigate to="/dashboard" replace />;
     }
-    // If authenticated and the role is admin, render the children components (e.g., Users page)
+    // If authenticated and the role is admin or manager, render the children components (e.g., Users page)
     return children;
   }
 };

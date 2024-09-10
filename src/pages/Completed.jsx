@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
+import CreateTask from "../components/CreateTask";
 import {
   AiOutlineCheckCircle,
   AiOutlineExclamationCircle,
@@ -14,9 +15,11 @@ import Cookies from "js-cookie";
 
 const Completed = () => {
   const [tasks, setTasks] = useState([]);
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(""); // Add state for user ID
 
   // Use ThemeContext to get the theme
   const { theme } = useContext(ThemeContext);
@@ -26,10 +29,20 @@ const Completed = () => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setRole(decodedToken.role);
+      setUserId(decodedToken._id); // Extract user ID
     }
   }, []);
 
-  const fetchTasks = async () => {
+  const openAddTask = () => {
+    setIsAddTaskOpen(true);
+  };
+
+  const closeAddTask = () => {
+    setIsAddTaskOpen(false);
+  };
+
+  // Memoize fetchTasks to avoid recreating the function on each render
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("http://localhost:3006/task/tasks", {
@@ -42,7 +55,21 @@ const Completed = () => {
 
       const data = await response.json();
       if (data) {
-        setTasks(data);
+        let filteredTasks;
+
+        if (role === "admin" || role === "manager") {
+          // Admins see all Completed tasks
+          filteredTasks = data.filter((task) => task.status === "completed");
+        } else {
+          // Regular users see only their completed tasks
+          filteredTasks = data
+            .filter((task) => task.status === "completed")
+            .filter((task) =>
+              task.team.some((member) => member._id === userId)
+            );
+        }
+
+        setTasks(filteredTasks);
       } else {
         const text = await response.text();
         console.error("Response is not JSON:", text);
@@ -54,11 +81,11 @@ const Completed = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]); // Include `fetchTasks` in dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -93,8 +120,6 @@ const Completed = () => {
           return (
             <AiOutlineExclamationCircle size={20} className="text-red-500" />
           );
-        case "medium":
-          return <AiOutlineInfoCircle size={20} className="text-yellow-500" />;
         case "normal":
           return <AiOutlineFlag size={20} className="text-blue-500" />;
         case "low":
@@ -108,8 +133,6 @@ const Completed = () => {
       switch (priority) {
         case "high":
           return "bg-red-100";
-        case "medium":
-          return "bg-yellow-100";
         case "normal":
           return "bg-blue-100";
         case "low":
@@ -137,14 +160,27 @@ const Completed = () => {
       <main className="flex-1 p-6 text-black">
         <Navbar />
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
-          Completed Tasks
+        completed Tasks
         </h2>
-        <div className="flex items-center space-x-4 mb-8">
-          <PriorityDisplay priority="high" />
-          <PriorityDisplay priority="medium" />
-          <PriorityDisplay priority="normal" />
-          <PriorityDisplay priority="low" />
-        </div>
+        {role !== "admin" && (
+          <div className="flex items-center space-x-4 mb-8 ">
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
+        {role === "admin" && (
+          <div className="flex items-center space-x-4 mb-8">
+            <button
+              onClick={openAddTask}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+              Add Task
+            </button>
+            <PriorityDisplay priority="high" />
+            <PriorityDisplay priority="normal" />
+            <PriorityDisplay priority="low" />
+          </div>
+        )}
 
         {loading ? (
           <p className="text-lg">Loading tasks...</p>
@@ -153,22 +189,29 @@ const Completed = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tasks.length > 0 ? (
-              tasks.some((task) => task.status === "completed") ? (
-                tasks
-                  .filter((task) => task.status === "completed") // Filter tasks by "completed" status
-                  .map((task) => (
-                    <TaskCard
-                      key={task._id}
-                      task={task}
-                      onDelete={handleDeleteTask}
-                    />
-                  ))
-              ) : (
-                <p className="text-lg">No tasks completed yet.</p>
-              )
+              tasks.map((task) => (
+                <TaskCard
+                  key={task._id}
+                  task={task}
+                  onDelete={handleDeleteTask}
+                />
+              ))
             ) : (
-              <p className="text-lg">No tasks available.</p>
+              <p className="text-lg">No completed tasks available.</p>
             )}
+          </div>
+        )}
+
+        {isAddTaskOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+              <CreateTask onClose={closeAddTask} />
+              <button
+                onClick={closeAddTask}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                &times;
+              </button>
+            </div>
           </div>
         )}
       </main>
