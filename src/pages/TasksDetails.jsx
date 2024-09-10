@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -17,7 +17,6 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../App.css";
 
-
 const TaskDetails = () => {
   const { id } = useParams();
   const [task, setTask] = useState(null);
@@ -30,12 +29,15 @@ const TaskDetails = () => {
   });
   const [showPopup, setShowPopup] = useState(false);
   const [showTimelinePopup, setShowTimelinePopup] = useState(true);
-
-
-
+  const [subtasks, setSubtasks] = useState([]);
+  const [newSubtask, setNewSubtask] = useState({
+    title: "",
+    status: "pending",
+  });
+  const [editSubtask, setEditSubtask] = useState(null);
   useEffect(() => {
-    const fetchTask = async () => {
-      setLoading(true);
+    const fetchTaskDetails = async () => {
+      setLoading(true); // Start loading
       try {
         const response = await fetch(`http://localhost:3006/task/task/${id}`, {
           method: "GET",
@@ -49,19 +51,37 @@ const TaskDetails = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();
-        setTask(data);
+        const taskData = await response.json();
+        setTask(taskData);
 
+        // Fetch subtasks
+        const subtaskResponse = await fetch(
+          `http://localhost:3006/task/task/${id}/subtasks`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!subtaskResponse.ok) {
+          throw new Error(`HTTP error! Status: ${subtaskResponse.status}`);
+        }
+
+        const subtaskData = await subtaskResponse.json();
+        setSubtasks(subtaskData);
       } catch (error) {
         console.error("Error fetching task details:", error);
         setError("Error fetching task details.");
       } finally {
-        setLoading(false);
+        setLoading(false); // End loading
       }
     };
 
-    fetchTask();
-  }, [id]);
+    fetchTaskDetails();
+  }, [id, subtasks]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,10 +136,66 @@ const TaskDetails = () => {
       setError("Failed to add activity.");
     }
   };
+  const handleAddSubtask = async (e) => {
+    e.preventDefault();
+    try {
+      // console.log("new subtask is,",newSubtask);
+      const response = await fetch(
+        `http://localhost:3006/task/task/${id}/subtasks`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newSubtask),
+        }
+      );
 
-  if (loading) {
-    return <p className="text-center text-gray-500">Loading...</p>;
-  }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const addedSubtask = await response.json();
+      // console.log("addedSubtask is", addedSubtask)
+      setSubtasks((prev) => [...prev, addedSubtask]); // Add new subtask to the list
+      setNewSubtask({ title: "", status: "pending" }); // Reset new subtask form
+    } catch (error) {
+      console.error("Error adding subtask:", error);
+      setError("Failed to add subtask.");
+    }
+  };
+
+  const handleUpdateSubtask = async (subtaskId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3006/task/task/${id}/subtasks/${subtaskId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editSubtask),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const updatedSubtask = await response.json();
+      setSubtasks((prev) =>
+        prev.map((subtask) =>
+          subtask._id === subtaskId ? updatedSubtask : subtask
+        )
+      );
+      setEditSubtask(null); // Reset editing state
+    } catch (error) {
+      console.error("Error updating subtask:", error);
+      setError("Failed to update subtask.");
+    }
+  };
 
   if (error) {
     return <p className="text-center text-red-500">{error}</p>;
@@ -138,14 +214,12 @@ const TaskDetails = () => {
             <div className="space-x-2">
               <button
                 onClick={() => setShowPopup((prev) => !prev)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-              >
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
                 {showPopup ? "Cancel Activity" : "Add Activity"}
               </button>
               <button
                 onClick={() => setShowTimelinePopup((prev) => !prev)}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-              >
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
                 {showTimelinePopup ? "Hide Timeline" : "Show Timeline"}
               </button>
             </div>
@@ -188,6 +262,72 @@ const TaskDetails = () => {
                   ))
                 : "No team members"}
             </p>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-800 mt-10">
+              Task Sub Tasks
+            </h2>
+            {/* Subtasks Section */}
+            <div className="bg-gradient-to-r from-green-50 to-green-200 shadow-lg rounded-lg p-6 mb-4 border border-green-300 text-black">
+              <h2 className="text-2xl font-semibold mb-4 text-green-800">
+                Subtasks
+              </h2>
+              <ul>
+                {subtasks.map((subtask) => (
+                  <li
+                    key={subtask._id}
+                    className="flex justify-between items-center mb-2">
+                    {editSubtask && editSubtask._id === subtask._id ? (
+                      <input
+                        type="text"
+                        value={editSubtask.title}
+                        onChange={(e) =>
+                          setEditSubtask({
+                            ...editSubtask,
+                            title: e.target.value,
+                          })
+                        }
+                        className="border border-gray-300 p-2 rounded"
+                      />
+                    ) : (
+                      <span>{subtask.title}</span>
+                    )}
+                    <button
+                      onClick={() =>
+                        setEditSubtask(editSubtask ? null : subtask)
+                      }
+                      className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">
+                      {editSubtask && editSubtask._id === subtask._id
+                        ? "Cancel"
+                        : "Edit"}
+                    </button>
+                    {editSubtask && editSubtask._id === subtask._id && (
+                      <button
+                        onClick={() => handleUpdateSubtask(subtask._id)}
+                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 ml-2">
+                        Save
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {/* Add Subtask Form */}
+              <form onSubmit={handleAddSubtask} className="mt-4">
+                <input
+                  type="text"
+                  placeholder="New Subtask Title"
+                  value={newSubtask.title} // Bind the value to state
+                  onChange={(e) =>
+                    setNewSubtask({ ...newSubtask, title: e.target.value })
+                  }
+                  required
+                  className="border border-gray-300 rounded p-2 mr-2"
+                />
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">
+                  Add Subtask
+                </button>
+              </form>
+            </div>
           </div>
 
           {showPopup && (
@@ -196,8 +336,7 @@ const TaskDetails = () => {
                 initial={{ opacity: 0, y: -100 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl text-black"
-              >
+                className="bg-white p-6 rounded-lg shadow-lg w-[80vw] max-w-4xl text-black">
                 <h2 className="text-2xl font-semibold mb-4">
                   Add New Activity
                 </h2>
@@ -212,8 +351,7 @@ const TaskDetails = () => {
                       value={newActivity.type}
                       onChange={handleChange}
                       className="border border-gray-300 rounded p-2"
-                      required
-                    >
+                      required>
                       <option value="assigned">Assigned</option>
                       <option value="started">Started</option>
                       <option value="in progress">In Progress</option>
@@ -233,8 +371,7 @@ const TaskDetails = () => {
                       onChange={handleChange}
                       rows="3"
                       className="border border-gray-300 rounded p-2"
-                      required
-                    ></textarea>
+                      required></textarea>
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="date" className="mb-1 font-medium">
@@ -254,14 +391,12 @@ const TaskDetails = () => {
                     <button
                       type="button"
                       onClick={() => setShowPopup(false)}
-                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                    >
+                      className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    >
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                       Submit
                     </button>
                   </div>
@@ -285,8 +420,7 @@ const TaskDetails = () => {
                       background: getIconBackgroundColor(activity.type),
                       color: "#fff",
                     }}
-                    icon={getActivityIcon(activity.type)}
-                  >
+                    icon={getActivityIcon(activity.type)}>
                     <h3 className="text-xl font-semibold">{activity.type}</h3>
                     <p>{activity.activity}</p>
                     <p>By : {activity.userName}</p>
