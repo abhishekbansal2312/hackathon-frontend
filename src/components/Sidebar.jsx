@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   FaTachometerAlt,
   FaTasks,
-  FaCalendarAlt,
-  FaCog,
   FaUsers,
   FaCheckCircle,
   FaSpinner,

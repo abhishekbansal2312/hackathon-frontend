@@ -5,11 +5,12 @@ import ThemeToggle from "./ThemeToggle";
 import "../App.css";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { FaUserCircle } from "react-icons/fa"; // Import user icon
+import { MdLogout } from "react-icons/md"; // Import logout icon
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-
   const [userName, setUserName] = useState("");
 
   function handleLogout() {
@@ -21,8 +22,7 @@ const Navbar = () => {
       .then((response) => {
         if (response.ok) {
           console.log("Logout successful");
-          localStorage.clear(); 
-          // Clear all data from localStorage
+          localStorage.clear(); // Clear all data from localStorage
           navigate("/"); // Redirect to the homepage or login page after logout
         }
       })
@@ -30,6 +30,7 @@ const Navbar = () => {
         console.error("Logout failed:", error);
       });
   }
+
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
@@ -44,8 +45,7 @@ const Navbar = () => {
         theme === "light"
           ? "bg-white text-black z-50"
           : "bg-gray-800 text-white z-50"
-      }`}
-    >
+      }`}>
       <div className="flex justify-between items-center px-8 max-w-screen-xl mx-auto">
         {/* Logo or Title */}
         <h1 className="text-2xl font-bold tracking-wide hover:text-blue-500 transition duration-200">
@@ -55,32 +55,37 @@ const Navbar = () => {
         {/* Navigation Links */}
         <div className="flex space-x-6 items-center">
           <p className="text-lg font-semibold">
-  Welcome <span style={{ color: '#3498db' }}>{userName}</span>
-</p>
+            Welcome <span style={{ color: "#3498db" }}>{userName}</span>
+          </p>
 
           <Link
             to="/about"
-            className="hover:text-blue-500 transition duration-200"
-          >
+            className="hover:text-blue-500 transition duration-200">
             About
           </Link>
           <Link
             to="/contact"
-            className="hover:text-blue-500 transition duration-200"
-          >
+            className="hover:text-blue-500 transition duration-200">
             Contact
           </Link>
 
           {/* Theme Toggle Button */}
           <ThemeToggle />
 
-          {/* Logout Button */}
+          {/* Logout Button with Icon */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
-          >
-            Logout
+            className="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+            <MdLogout size={20} className="mr-2" /> {/* Logout Icon */}{" "}
+            <p>Logout</p>
           </button>
+
+          {/* Profile Icon */}
+          <Link
+            to="/profile"
+            className="hover:text-blue-500 transition duration-200">
+            <FaUserCircle size={28} /> {/* Profile Icon */}
+          </Link>
         </div>
       </div>
     </nav>

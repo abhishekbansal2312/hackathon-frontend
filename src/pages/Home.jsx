@@ -34,7 +34,7 @@ const HomePage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-black to-gray-900 py-24 text-center min-h-screen">
+      <section className="relative bg-gradient-to-r from-black to-gray-900 py-24 text-center min-h-screen flex flex-col justify-center items-center">
         <div className="container mx-auto px-4">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-normal">
             Organize &amp; Optimize Your{" "}
@@ -50,7 +50,7 @@ const HomePage = () => {
             <strong> WorkGrid</strong> helps you achieve more with less effort.
           </p>
           <Link to="/dashboard">
-            <button className="bg-gradient-to-r from-pink-500 to-purple-500 py-4 px-8 rounded-full text-lg shadow-xl transform hover:scale-105 transition-transform duration-300">
+            <button className="bg-gradient-to-r from-pink-500 to-purple-500 py-4 px-8 rounded-full text-lg shadow-xl transform hover:scale-105 transition-transform duration-300 mx-auto">
               Get Started Free
             </button>
           </Link>
@@ -130,7 +130,7 @@ const HomePage = () => {
       </section>
 
       {/* Left and Right Section */}
-      <section className="bg-black py-24">
+      <section className="bg-black pt-24 mx-20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-indigo-400">
             Unlock Powerful Features
@@ -148,7 +148,7 @@ const HomePage = () => {
               <h3 className="text-3xl font-bold text-indigo-400">
                 Boost Efficiency & Minimize Costs
               </h3>
-              <p className="text-lg text-gray-300">
+              <p className="text-lg text-gray-300 mr-6">
                 With real-time collaboration, powerful integrations, and
                 efficient task management, WorkGrid ensures your team operates
                 at peak productivity without breaking the bank.
@@ -163,45 +163,42 @@ const HomePage = () => {
             {/* Image */}
             <div className="md:w-1/2 mt-8 md:mt-0">
               <img
-                className="rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500"
+                className="rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500 mx-auto"
                 src="https://t3.ftcdn.net/jpg/07/64/19/46/240_F_764194617_mriQFo2VdT6WoDw4ihl7G695lZYmI9sJ.jpg"
-                alt="Feature 1"
+                alt="Boost Efficiency"
               />
             </div>
           </div>
 
           {/* Row 2: Image Left, Content Right */}
-          <div className="flex flex-col md:flex-row items-center justify-between mb-16">
+          <div className="flex flex-col md:flex-row items-center justify-between">
             {/* Image */}
-            <div className="md:w-1/2 order-2 md:order-1 mt-8 md:mt-0">
+            <div className="md:w-1/2 mb-8 md:mb-0">
               <img
-                className="rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500"
+                className="rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-500 mx-auto"
                 src="https://t3.ftcdn.net/jpg/02/13/05/58/240_F_213055873_eCxNAjgfwP9JE6MM4Io2s0qpNOPxOoIs.jpg"
-                alt="Feature 2"
+                alt="Collaborate with Ease"
               />
             </div>
 
             {/* Content */}
-            <div className="md:w-1/2 text-left space-y-4 order-1 md:order-2">
+            <div className="md:w-1/2 text-left space-y-4">
               <h3 className="text-3xl font-bold text-indigo-400">
-                Never Miss a Deadline
+                Collaborate with Ease
               </h3>
-              <p className="text-lg text-gray-300">
-                Stay ahead of schedule with automated task assignments, progress
-                monitoring, and clear team transparency, all within one cohesive
-                platform.
+              <p className="text-lg text-gray-300 mr-12">
+                Empower your team with advanced collaboration tools that drive
+                engagement, streamline communication, and foster innovation.
               </p>
               <ul className="text-indigo-300 space-y-2">
-                <li>✔ Automated task assignments</li>
-                <li>✔ Real-time progress tracking</li>
-                <li>✔ Transparent team collaboration</li>
+                <li>✔ Real-time messaging and notifications</li>
+                <li>✔ Shared project boards</li>
+                <li>✔ Integrated file sharing</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Testimonials Section */}
       <section className="bg-black py-24 text-white">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-12">
@@ -220,7 +217,7 @@ const HomePage = () => {
 
             {/* Testimonial 2 */}
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <p className="text-xl italic mb-4">
+              <p className="text-xl italic">
                 "Since switching to WorkGrid, our team has seen a 40% increase
                 in productivity. It's a game-changer for managing complex
                 tasks."
@@ -242,28 +239,12 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-10 text-center mt-auto">
-        <p className="text-sm">&copy; 2024 WorkGrid. All rights reserved.</p>
-        <div className="flex justify-center mt-4 space-x-6">
-          <Link
-            to="/terms"
-            className="hover:underline text-gray-400 transition-colors duration-300"
-          >
-            Terms of Service
-          </Link>
-          <Link
-            to="/privacy"
-            className="hover:underline text-gray-400 transition-colors duration-300"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            to="/support"
-            className="hover:underline text-gray-400 transition-colors duration-300"
-          >
-            Support
-          </Link>
+      {/* Footer Section */}
+      <footer className="bg-gradient-to-r from-gray-900 to-black text-white">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-sm md:text-base text-gray-400">
+            © 2024 WorkGrid Inc. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

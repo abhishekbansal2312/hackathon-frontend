@@ -14,6 +14,7 @@ import ProtectedRouteAdminOnly from "./components/ProtectedRouteAdminOnly.jsx";
 import Pending from "./pages/Pending";
 import Progress from "./pages/Progress";
 import Completed from "./pages/Completed";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -65,6 +66,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <TasksDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

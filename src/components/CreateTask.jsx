@@ -93,8 +93,7 @@ const CreateTask = ({ onClose }) => {
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-lg"
-          aria-label="Close"
-        >
+          aria-label="Close">
           &times;
         </button>
         <h1 className="text-2xl font-semibold mb-4">Create New Task</h1>
@@ -105,8 +104,7 @@ const CreateTask = ({ onClose }) => {
         )}
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
+          className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-1">
             <label className="block text-gray-700">Title:</label>
             <input
@@ -123,8 +121,7 @@ const CreateTask = ({ onClose }) => {
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            >
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
               <option value="high">High</option>
               <option value="normal">Normal</option>
               <option value="low">Low</option>
@@ -135,8 +132,7 @@ const CreateTask = ({ onClose }) => {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            >
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
               <option value="pending">Pending</option>
               <option value="in-progress">In Progress</option>
               <option value="to-do">Todo</option>
@@ -186,8 +182,7 @@ const CreateTask = ({ onClose }) => {
 
           <button
             type="submit"
-            className="col-span-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          >
+            className="col-span-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
             Create Task
           </button>
         </form>

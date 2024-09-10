@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
@@ -41,7 +41,8 @@ const Pending = () => {
     setIsAddTaskOpen(false);
   };
 
-  const fetchTasks = async () => {
+  // Memoize fetchTasks to avoid recreating the function on each render
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("http://localhost:3006/task/tasks", {
@@ -58,12 +59,14 @@ const Pending = () => {
 
         if (role === "admin") {
           // Admins see all pending tasks
-          filteredTasks = data.filter(task => task.status === "pending");
+          filteredTasks = data.filter((task) => task.status === "pending");
         } else {
           // Regular users see only their pending tasks
           filteredTasks = data
-            .filter(task => task.status === "pending")
-            .filter(task => task.team.some(member => member._id === userId));
+            .filter((task) => task.status === "pending")
+            .filter((task) =>
+              task.team.some((member) => member._id === userId)
+            );
         }
 
         setTasks(filteredTasks);
@@ -78,11 +81,11 @@ const Pending = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   useEffect(() => {
     fetchTasks();
-  }, [role, userId]); // Add `role` and `userId` as dependencies
+  }, [fetchTasks]); // Include `fetchTasks` in dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {

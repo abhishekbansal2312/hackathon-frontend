@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
@@ -13,7 +13,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 
-const Inprogress = () => {
+const Progress = () => {
   const [tasks, setTasks] = useState([]);
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,8 @@ const Inprogress = () => {
     setIsAddTaskOpen(false);
   };
 
-  const fetchTasks = async () => {
+  // Memoize fetchTasks to avoid recreating the function on each render
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("http://localhost:3006/task/tasks", {
@@ -57,13 +58,15 @@ const Inprogress = () => {
         let filteredTasks;
 
         if (role === "admin") {
-          // Admins see all in progress tasks
-          filteredTasks = data.filter(task => task.status === "in-progress");
+          // Admins see all in-progress tasks
+          filteredTasks = data.filter((task) => task.status === "in-progress");
         } else {
-          // Regular users see only their n-progress tasks
+          // Regular users see only their in-progress tasks
           filteredTasks = data
-            .filter(task => task.status === "in-progress")
-            .filter(task => task.team.some(member => member._id === userId));
+            .filter((task) => task.status === "in-progress")
+            .filter((task) =>
+              task.team.some((member) => member._id === userId)
+            );
         }
 
         setTasks(filteredTasks);
@@ -78,11 +81,11 @@ const Inprogress = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [role, userId]); // Add `role` and `userId` as dependencies
 
   useEffect(() => {
     fetchTasks();
-  }, [role, userId]); // Add `role` and `userId` as dependencies
+  }, [fetchTasks]); // Include `fetchTasks` in dependencies
 
   const handleDeleteTask = async (taskId) => {
     try {
@@ -161,10 +164,10 @@ const Inprogress = () => {
       <main className="flex-1 p-6 text-black">
         <Navbar />
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 animate-fadeIn">
-          in-progress Tasks
+          In-Progress Tasks
         </h2>
         {role !== "admin" && (
-          <div className="flex items-center space-x-4 mb-8 ">
+          <div className="flex items-center space-x-4 mb-8">
             <PriorityDisplay priority="high" />
             <PriorityDisplay priority="medium" />
             <PriorityDisplay priority="normal" />
@@ -222,4 +225,4 @@ const Inprogress = () => {
   );
 };
 
-export default Inprogress;
+export default Progress;
