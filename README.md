@@ -40,7 +40,7 @@ The **WorkGrid** is a web application designed to help teams manage tasks, track
 
 ## 🎥 Demo
 
-[Watch the demo video](https://drive.google.com/file/d/1NXmO3PeYObZGUlDM7LdiWAezsYFy8Xd5/view?usp=drive_link ) to see the website in action.
+[Watch the demo video](https://drive.google.com/file/d/1upQrRyZfOlg6CngRLucBqnukfN0NOYyY/view?usp=sharing ) to see the website in action.
 
 ---
 
