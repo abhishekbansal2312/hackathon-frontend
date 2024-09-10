@@ -13,3 +13,19 @@
   background-color: black !important; /* Change header background to black */
   color: white !important;            /* Change header text to white */
 }
+
+
+
+/* icon spining speed */
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.slow-spin {
+  animation: slow-spin 3s linear infinite; /* Adjust the 5s to control the speed */
+}
