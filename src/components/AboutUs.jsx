@@ -9,7 +9,7 @@ const teamMembers = [
     role: "Frontend Developer",
     description:
       "As a frontend developer on the WorkGrid project, I was instrumental in crafting a user-friendly interface and seamless experience. My backend knowledge complemented this by ensuring robust functionality and smooth integration, helping us deliver a powerful project management tool.",
-    imgSrc: "/abbas2  .jpg",
+    imgSrc: "/abbas2.jpg",
   },
   {
     id: 2,
