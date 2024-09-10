@@ -14,7 +14,7 @@ const Dashboard = () => {
     computedTasks: 0,
     tasksInProgress: 0,
     pending: 0,
-    priorityData: { high: 0, medium: 0, normal: 0, low: 0 },
+    priorityData: { high: 0, normal: 0, low: 0 },
   });
 
   const { theme } = useContext(ThemeContext);
@@ -51,7 +51,6 @@ const Dashboard = () => {
         const pending = data.filter((task) => task.status === "pending").length;
         const priorityData = {
           high: data.filter((task) => task.priority === "high").length,
-          medium: data.filter((task) => task.priority === "medium").length,
           normal: data.filter((task) => task.priority === "normal").length,
           low: data.filter((task) => task.priority === "low").length,
         };
@@ -76,11 +75,11 @@ const Dashboard = () => {
   };
 
   const priorityChartData = {
-    labels: ["High", "Medium", "Normal", "Low"],
+    labels: ["High", "Normal", "Low"],
     datasets: [
       {
         data: Object.values(taskData.priorityData),
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+        backgroundColor: ["#FF6384", "#36A2EB", "#4BC0C0"],
       },
     ],
   };

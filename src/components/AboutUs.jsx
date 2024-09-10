@@ -9,7 +9,7 @@ const teamMembers = [
     role: "Frontend Developer",
     description:
       "As a frontend developer on the WorkGrid project, I was instrumental in crafting a user-friendly interface and seamless experience. My backend knowledge complemented this by ensuring robust functionality and smooth integration, helping us deliver a powerful project management tool.",
-    imgSrc: "/abbas1.jpg",
+    imgSrc: "/abbas2.jpg",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const teamMembers = [
     role: "Backend Developer",
     description:
       "As a backend developer, I specialize in designing and implementing server-side logic and database management to support scalable and efficient web applications. My work ensures robust performance and reliability for all backend processes.",
-    imgSrc: "https://via.placeholder.com/150",
+    imgSrc: "/ali2.jpg",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const teamMembers = [
     role: "Full Stack Developer",
     description:
       "As a full stack developer, I am proficient in both frontend and backend technologies, enabling me to build and maintain complete web applications. My expertise includes developing user interfaces, server-side logic, and database management, ensuring a seamless and integrated development process.",
-    imgSrc: "https://via.placeholder.com/150",
+    imgSrc: "abhishek.jpg",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const teamMembers = [
     role: "Content Marketing Specialist",
     description:
       "I specialize in crafting compelling, SEO-optimized content that drives brand growth and engagement. My content marketing strategies focus on creating valuable and relevant content that attracts and retains target audiences, enhancing overall brand visibility and performance.",
-    imgSrc: "https://via.placeholder.com/150",
+    imgSrc: "tanu.jpg",
   },
 ];
 
