@@ -52,7 +52,15 @@ The **WorkGrid** is a web application designed to help teams manage tasks, track
 
 <img width="941" alt="Tasks" src="https://github.com/user-attachments/assets/4d3e6ad3-bbb3-4842-b418-050c3b5cd9a7">
 
----
+--- 
+
+## 📷 Diagrams
+
+![Screenshot 2024-09-14 152934](https://github.com/user-attachments/assets/04fa8948-2dad-45c7-8a24-d25770b7bff4)
+
+![Screenshot 2024-09-14 152952](https://github.com/user-attachments/assets/043f18a9-8132-4199-81c9-ed19954a70bf)
+
+
 
 ## ⚙️ Frontend/Backend Installation
 
