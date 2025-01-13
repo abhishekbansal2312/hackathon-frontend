@@ -31,13 +31,16 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:3006/task/tasks", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://hackathon-backend-1-c3f5.onrender.com/task/tasks",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       if (data) {
@@ -168,7 +171,8 @@ const Dashboard = () => {
         theme === "dark"
           ? "bg-gray-900 text-gray-100"
           : "bg-gray-100 text-gray-900"
-      } min-h-screen`}>
+      } min-h-screen`}
+    >
       {/* Sidebar */}
       <Sidebar />
 
@@ -181,7 +185,8 @@ const Dashboard = () => {
         <main
           className={`flex-1 p-6 ${
             theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-          }`}>
+          }`}
+        >
           {/* Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 mt-20">
             {[
@@ -213,7 +218,8 @@ const Dashboard = () => {
                 } flex flex-col items-center`}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 + index * 0.2 }}>
+                transition={{ duration: 0.5 + index * 0.2 }}
+              >
                 <h2 className={`text-xl font-semibold ${item.color}`}>
                   {item.label}
                 </h2>
@@ -233,11 +239,13 @@ const Dashboard = () => {
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}>
+              transition={{ duration: 1 }}
+            >
               <h2
                 className={`text-xl font-semibold ${
                   theme === "dark" ? "text-gray-300" : "text-gray-800"
-                } mb-4 text-center`}>
+                } mb-4 text-center`}
+              >
                 Task Priority Chart
               </h2>
               <div className="w-full h-[350px]">
@@ -252,11 +260,13 @@ const Dashboard = () => {
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}>
+              transition={{ duration: 0.7 }}
+            >
               <h2
                 className={`text-xl font-semibold ${
                   theme === "dark" ? "text-gray-300" : "text-gray-800"
-                } mb-4 text-center`}>
+                } mb-4 text-center`}
+              >
                 Task Status Chart
               </h2>
               <div className="w-full h-[350px]">

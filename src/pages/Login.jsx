@@ -16,14 +16,17 @@ const Login = () => {
     try {
       setLoading(true);
       //https://hackathon-backend-l1id.onrender.com/auth/login
-      const response = await fetch("http://localhost:3006/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://hackathon-backend-1-c3f5.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         // Extract the error message from the response
@@ -87,7 +90,8 @@ const Login = () => {
             {!loading && (
               <button
                 type="submit"
-                className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out">
+                className="w-full bg-teal-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-teal-600 transition duration-300 ease-in-out"
+              >
                 Login
               </button>
             )}

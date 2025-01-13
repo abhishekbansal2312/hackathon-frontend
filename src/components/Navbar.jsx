@@ -14,7 +14,7 @@ const Navbar = () => {
   const [userName, setUserName] = useState("");
 
   function handleLogout() {
-    const url = "http://localhost:3006/auth/logout";
+    const url = "https://hackathon-backend-1-c3f5.onrender.com/auth/logout";
     fetch(url, {
       method: "DELETE",
       credentials: "include",
@@ -45,7 +45,8 @@ const Navbar = () => {
         theme === "light"
           ? "bg-white text-black z-50"
           : "bg-gray-800 text-white z-50"
-      }`}>
+      }`}
+    >
       <div className="flex justify-between items-center px-8 ml-8">
         {/* Logo or Title */}
         <h1 className="text-2xl font-bold tracking-wide hover:text-blue-500 transition duration-200">
@@ -75,7 +76,8 @@ const Navbar = () => {
           {/* Logout Button with Icon */}
           <button
             onClick={handleLogout}
-            className="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+            className="flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+          >
             <MdLogout size={20} className="mr-2" /> {/* Logout Icon */}{" "}
             <p>Logout</p>
           </button>
@@ -83,7 +85,8 @@ const Navbar = () => {
           {/* Profile Icon */}
           <Link
             to="/profile"
-            className="hover:text-blue-500 transition duration-200">
+            className="hover:text-blue-500 transition duration-200"
+          >
             <FaUserCircle size={28} /> {/* Profile Icon */}
           </Link>
         </div>
