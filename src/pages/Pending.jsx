@@ -7,7 +7,6 @@ import {
   AiOutlineCheckCircle,
   AiOutlineExclamationCircle,
   AiOutlineFlag,
-  AiOutlineInfoCircle,
 } from "react-icons/ai";
 import { ThemeContext } from "../context/ThemeContext";
 import { jwtDecode } from "jwt-decode";
@@ -145,7 +144,8 @@ const Pending = () => {
 
     return (
       <span
-        className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor()}`}>
+        className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor()}`}
+      >
         {getPriorityIcon()}
         <span>{priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
       </span>
@@ -156,7 +156,8 @@ const Pending = () => {
     <div
       className={`flex min-h-screen ${
         theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-      }`}>
+      }`}
+    >
       <Sidebar />
       <main className="flex-1 p-6 text-black">
         <Navbar />
@@ -174,7 +175,8 @@ const Pending = () => {
           <div className="flex items-center space-x-4 mb-8">
             <button
               onClick={openAddTask}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+            >
               Add Task
             </button>
             <PriorityDisplay priority="high" />
@@ -209,7 +211,8 @@ const Pending = () => {
               <CreateTask onClose={closeAddTask} />
               <button
                 onClick={closeAddTask}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              >
                 &times;
               </button>
             </div>

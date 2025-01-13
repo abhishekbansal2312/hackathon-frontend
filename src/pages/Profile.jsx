@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowLeft, FaUserCircle } from "react-icons/fa";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Sphere, useTexture } from "@react-three/drei";
-import { animated, useSpring } from "@react-spring/web";
+import { Sphere } from "@react-three/drei";
 
 const AnimatedParticles = () => {
   const particlesRef = React.useRef();
@@ -26,7 +25,8 @@ const AnimatedParticles = () => {
             Math.random() * 10 - 5,
             Math.random() * 10 - 5,
             Math.random() * 10 - 5,
-          ]}>
+          ]}
+        >
           <meshStandardMaterial
             attach="material"
             color={`hsl(${Math.random() * 360}, 100%, 80%)`}
@@ -94,13 +94,15 @@ const Profile = () => {
       <div className="absolute top-5 left-5 z-10">
         <button
           onClick={handleBackClick}
-          className="flex items-center text-blue-300 hover:text-blue-200 transition duration-200">
+          className="flex items-center text-blue-300 hover:text-blue-200 transition duration-200"
+        >
           <FaArrowLeft className="mr-2" /> Back to Dashboard
         </button>
       </div>
       <Canvas
         className="absolute inset-0 -z-10"
-        style={{ position: "absolute" }}>
+        style={{ position: "absolute" }}
+      >
         <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} />
         <AnimatedParticles />
@@ -110,7 +112,8 @@ const Profile = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-red-400 text-center z-10">
+          className="text-red-400 text-center z-10"
+        >
           {error}
         </motion.div>
       ) : userProfile ? (
@@ -118,7 +121,8 @@ const Profile = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="max-w-md w-full bg-gray-800 shadow-lg rounded-lg overflow-hidden z-10">
+          className="max-w-md w-full bg-gray-800 shadow-lg rounded-lg overflow-hidden z-10"
+        >
           <div className="flex items-center justify-center bg-gradient-to-r from-blue-700 to-indigo-600 p-6">
             <FaUserCircle className="text-white text-5xl" />
           </div>

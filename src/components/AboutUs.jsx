@@ -12,14 +12,6 @@ const teamMembers = [
     imgSrc: "/abbas2.jpg",
   },
   {
-    id: 2,
-    name: "Ali Sher Khan",
-    role: "Backend Developer",
-    description:
-      "As a backend developer, I specialize in designing and implementing server-side logic and database management to support scalable and efficient web applications. My work ensures robust performance and reliability for all backend processes.",
-    imgSrc: "/ali2.jpg",
-  },
-  {
     id: 3,
     name: "Abhishek Bansal",
     role: "Full Stack Developer",
@@ -28,12 +20,12 @@ const teamMembers = [
     imgSrc: "abhishek.jpg",
   },
   {
-    id: 4,
-    name: "Tanu",
-    role: "Content Marketing Specialist",
+    id: 2,
+    name: "Ali Sher Khan",
+    role: "Backend Developer",
     description:
-      "I specialize in crafting compelling, SEO-optimized content that drives brand growth and engagement. My content marketing strategies focus on creating valuable and relevant content that attracts and retains target audiences, enhancing overall brand visibility and performance.",
-    imgSrc: "tanu.jpg",
+      "As a backend developer, I specialize in designing and implementing server-side logic and database management to support scalable and efficient web applications. My work ensures robust performance and reliability for all backend processes.",
+    imgSrc: "/ali2.jpg",
   },
 ];
 
@@ -61,13 +53,11 @@ const AboutUs = () => {
       </div>
 
       {/* Team Members Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {teamMembers.map((member, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {teamMembers.map((member) => (
           <div
             key={member.id}
-            className={`bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2 ${
-              index === 1 || index === 2 ? "mt-8" : ""
-            }`}
+            className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-2"
           >
             <img
               src={member.imgSrc}

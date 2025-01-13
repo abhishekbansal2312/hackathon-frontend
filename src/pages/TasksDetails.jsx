@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -265,10 +265,8 @@ const TaskDetails = () => {
                 : "No team members"}
             </p>
             <p className="flex items-start gap-2 overflow-x-auto">
-              <strong>Descrition:</strong> 
-              <div>
-              {task?.description || "N/A"}
-              </div>
+              <strong>Descrition:</strong>
+              <div>{task?.description || "N/A"}</div>
             </p>
             <h2 className="text-2xl font-semibold mb-4 text-blue-800 mt-10">
               Task Sub Tasks
