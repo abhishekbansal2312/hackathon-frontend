@@ -36,6 +36,7 @@ const Login = () => {
       }
 
       const data = await response.json();
+      console.log(data);
 
       // Check if the response contains the expected success message
       if (data.message === "Login successful") {
